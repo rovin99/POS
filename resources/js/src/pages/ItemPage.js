@@ -159,7 +159,7 @@ const ItemPage = () => {
               <Select>
                 <Select.Option value="drinks">Drinks</Select.Option>
                 <Select.Option value="rice">Rice</Select.Option>
-                <Select.Option value="noodles">Noodels</Select.Option>
+                <Select.Option value="noodles">Noodles</Select.Option>
               </Select>
             </Form.Item>
 

@@ -30,7 +30,7 @@ const Homepage = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-        const { data } = await axios.get(`${window.App.url}/api/bills`);
+        const { data } = await axios.get(`${window.App.url}/api/items`);
         setItemsData(data);
         dispatch({ type: "HIDE_LOADING" });
         console.log(data);
@@ -63,7 +63,10 @@ const Homepage = () => {
       </div>
       <Row>
         {itemsData
-          .filter((i) => i.category === selecedCategory)
+          .filter((i) => {
+            console.log(i.category, selecedCategory); // Debugging line
+            return i.category === selecedCategory;
+          })
           .map((item) => (
             <Col xs={24} lg={6} md={12} sm={6}>
               <ItemList key={item.id} item={item} />
