@@ -9,6 +9,7 @@ Route::get('/api/items', [ItemController::class , 'index']);
 Route::post('/api/items', [ItemController::class , 'store']);
 Route::put('/api/items', [ItemController::class , 'update']);
 Route::delete('/api/items', [ItemController::class , 'destroy']);
+Route::post('api/upload', [ItemController::class, 'upload']);
 
 Route::get('/', function () {
     return view('welcome');

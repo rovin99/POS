@@ -27,8 +27,10 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        
         $item = Item::create($request->all());
+
         return response()->json($item, 201);
     }
 
@@ -60,4 +62,16 @@ class ItemController extends Controller
     $item->delete();
     return response()->json(null, 204);
 }
+public function upload(Request $request)
+{
+    $request->validate([
+        'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    $imageName = time().'.'.$request->file->extension();  
+    $request->file->move(public_path('uploads'), $imageName);
+
+    return response()->json(['url' => asset('uploads/'.$imageName)]);
+}
+
 }

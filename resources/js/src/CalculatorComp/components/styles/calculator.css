@@ -1,0 +1,11 @@
+.calc-wrapper {
+    width: 400px;
+    height: 500px;
+    margin-top: 25px;
+    margin-left: 40%;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+}

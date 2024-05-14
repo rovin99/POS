@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import { useDispatch } from "react-redux";
 import { EyeOutlined } from "@ant-design/icons";
-import ReactToPrint from "react-to-print";
+
 import { useReactToPrint } from "react-to-print";
 import axios from "axios";
 import { Modal, Button, Table } from "antd";

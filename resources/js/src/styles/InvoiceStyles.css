@@ -100,3 +100,23 @@ table {
 #legalcopy {
   margin-top: 5mm;
 }
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 12pt; /* Adjust font size for readability */
+  }
+  #invoice-POS {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px; /* Adjust padding as needed */
+    box-sizing: border-box;
+  }
+  #top, #mid, #bot {
+    page-break-inside: avoid; /* Prevents breaking content across pages */
+  }
+ .d-flex,.mt-3,.justify-content-end {
+    display: none; /* Hide elements not needed in print */
+  }
+}

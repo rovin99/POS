@@ -9,7 +9,7 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import { Table, Button, Modal, message, Form, Input, Select } from "antd";
-
+import Calculator from "../CalculatorComp/components/Calculator";
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0);
   const [billPopup, setBillPopup] = useState(false);
@@ -119,6 +119,7 @@ const CartPage = () => {
         <Button type="primary" onClick={() => setBillPopup(true)}>
           Create Invoice
         </Button>
+        <Calculator />
       </div>
       
       <Modal

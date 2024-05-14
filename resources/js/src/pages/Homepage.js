@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from "react";
 import DefaultLayout from "./../components/DefaultLayout";
 import axios from "axios";
-import { Row, Col } from "antd";
+import { Row, Col, Tabs } from "antd";
 import { useDispatch } from "react-redux";
 import ItemList from "../components/ItemList";
+
+const { TabPane } = Tabs;
+
 const Homepage = () => {
   const [itemsData, setItemsData] = useState([]);
-  const [selecedCategory, setSelecedCategory] = useState("drinks");
+  const [selectedCategory, setSelectedCategory] = useState("drinks");
   const categories = [
     {
       name: "drinks",
-      imageUrl: "https://cdn-icons-png.flaticon.com/512/430/430561.png",
     },
     {
       name: "rice",
-      imageUrl: "https://cdn-icons-png.flaticon.com/512/3174/3174880.png",
     },
     {
       name: "noodles",
-      imageUrl: "https://cdn-icons-png.flaticon.com/512/1471/1471262.png",
     },
   ];
   const dispatch = useDispatch();
 
-  //useEffect
   useEffect(() => {
     const getAllItems = async () => {
       try {
@@ -33,46 +32,30 @@ const Homepage = () => {
         const { data } = await axios.get(`${window.App.url}/api/items`);
         setItemsData(data);
         dispatch({ type: "HIDE_LOADING" });
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
     };
     getAllItems();
   }, [dispatch]);
-  return (
+
+  return (  
     <DefaultLayout>
-      <div className="d-flex">
+      <Tabs activeKey={selectedCategory} onChange={(key) => setSelectedCategory(key)}>
         {categories.map((category) => (
-          <div
-            key={category.name}
-            className={`d-flex category ${
-              selecedCategory === category.name && "category-active"
-            }`}
-            onClick={() => setSelecedCategory(category.name)}
-          >
-            <h4>{category.name}</h4>
-            <img
-              src={category.imageUrl}
-              alt={category.name}
-              height="40"
-              width="60"
-            />
-          </div>
+          <TabPane tab={category.name} key={category.name}>
+            <Row>
+              {itemsData
+               .filter((i) => i.category === selectedCategory)
+               .map((item) => (
+                  <Col xs={24} lg={6} md={12} sm={6} key={item.id}>
+                    <ItemList item={item} />
+                  </Col>
+                ))}
+            </Row>
+          </TabPane>
         ))}
-      </div>
-      <Row>
-        {itemsData
-          .filter((i) => {
-            console.log(i.category, selecedCategory); // Debugging line
-            return i.category === selecedCategory;
-          })
-          .map((item) => (
-            <Col xs={24} lg={6} md={12} sm={6}>
-              <ItemList key={item.id} item={item} />
-            </Col>
-          ))}
-      </Row>
+      </Tabs>
     </DefaultLayout>
   );
 };

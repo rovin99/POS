@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { Modal, Button, Table, Form, Input, Select, message } from "antd";
+import { Upload } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
 const ItemPage = () => {
   const dispatch = useDispatch();
   const [itemsData, setItemsData] = useState([]);
@@ -46,7 +48,26 @@ const ItemPage = () => {
       console.log(error);
     }
   };
-
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const uploadProps = {
+   
+    name: 'file',
+    action: `${window.App.url}/api/upload`, // Endpoint to handle file upload
+    headers: {
+      authorization: 'authorization-text',
+      'X-CSRF-TOKEN': csrfToken
+    },
+    onChange(info) {
+      if (info.file.status!== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
   //able data
   const columns = [
     { title: "Name", dataIndex: "name" },
@@ -153,8 +174,11 @@ const ItemPage = () => {
               <Input />
             </Form.Item>
             <Form.Item name="image" label="Image URL">
-              <Input />
-            </Form.Item>
+  <Input />
+  <Upload {...uploadProps}>
+    <Button icon={<InboxOutlined />}>Click to Upload</Button>
+  </Upload>
+</Form.Item>
             <Form.Item name="category" label="Category">
               <Select>
                 <Select.Option value="drinks">Drinks</Select.Option>
@@ -162,7 +186,16 @@ const ItemPage = () => {
                 <Select.Option value="noodles">Noodles</Select.Option>
               </Select>
             </Form.Item>
-
+            <Form.Item
+    name="stock"
+    label="Stock"
+    rules={[
+      { required: true, message: 'Please input the stock!' },
+      { pattern: /^[1-9]\d*$/, message: 'Stock must be a positive number!' },
+    ]}
+  >
+    <Input type="number" min="1" />
+  </Form.Item>
             <div className="d-flex justify-content-end">
               <Button type="primary" htmlType="submit">
                 SAVE
