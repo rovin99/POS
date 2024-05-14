@@ -79,7 +79,7 @@ const ItemPage = () => {
       ),
     },
     { title: "Price", dataIndex: "price" },
-
+    { title: "Stock", dataIndex: "stock" },
     {
       title: "Actions",
       dataIndex: "id",
@@ -175,9 +175,9 @@ const ItemPage = () => {
             </Form.Item>
             <Form.Item name="image" label="Image URL">
   <Input />
-  <Upload {...uploadProps}>
+  {/* <Upload {...uploadProps}>
     <Button icon={<InboxOutlined />}>Click to Upload</Button>
-  </Upload>
+  </Upload> */}
 </Form.Item>
             <Form.Item name="category" label="Category">
               <Select>
