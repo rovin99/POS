@@ -39,7 +39,7 @@ const BillsPage = () => {
 
   //able data
   const columns = [
-    { title: "ID ", dataIndex: "_id" },
+    { title: "ID ", dataIndex: "id" },
     {
       title: "Cutomer Name",
       dataIndex: "customer_name",

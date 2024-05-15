@@ -27,12 +27,28 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        
-        $item = Item::create($request->all());
+{   
+    $data = $request->all();
 
-        return response()->json($item, 201);
+    switch ($data['category']) {
+        case 'drinks':
+            $data['discount'] = 20;
+            break;
+        case 'rice':
+            $data['discount'] = 10;
+            break;
+        case 'noodles':
+            $data['discount'] = 15;
+            break;
+        default:
+            $data['discount'] = 0; // Default case if none match
     }
+
+    $item = Item::create($data);
+
+    return response()->json($item, 201);
+}
+
 
     /**
      * Update the specified resource in storage.
@@ -73,5 +89,10 @@ public function upload(Request $request)
 
     return response()->json(['url' => asset('uploads/'.$imageName)]);
 }
+ /** Out of Stock Itmes */
+ public function outOfStock(){
+    $items = Item::where('stock', '<', 1)->get();
+    return response()->json($items);
 
+ }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('image');
             $table->integer('stock');
+            $table->decimal('discount', 5, 2)->default(0);
             $table->timestamps();
         });
     }

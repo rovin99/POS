@@ -3,8 +3,10 @@ import DefaultLayout from "../components/DefaultLayout";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { Table } from "antd";
+import { Input } from "antd";
 const CutomerPage = () => {
   const [billsData, setBillsData] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const getAllBills = async () => {
     try {
@@ -27,20 +29,32 @@ const CutomerPage = () => {
   }, []);
 
   const columns = [
-    { title: "ID ", dataIndex: "_id" },
+    { title: "ID ", dataIndex: "id" },
     {
       title: "Cutomer Name",
       dataIndex: "customer_name",
     },
     { title: "Contact No", dataIndex: "customer_number" },
   ];
-
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+  };
   return (
     <DefaultLayout>
-      <h1>Cutomer Page</h1>
+      <h1>Customer Page</h1>
+      <Input.Search
+        placeholder="Search by customer name or number"
+        value={searchText}
+        onChange={handleSearch}
+        style={{ width: 300, marginBottom: 16 }}
+      />
       <Table
         columns={columns}
-        dataSource={billsData}
+        dataSource={billsData.filter(
+          (bill) =>
+            bill.customer_name.toLowerCase().includes(searchText.toLowerCase()) ||
+            bill.customer_number.toString().includes(searchText)
+        )}
         bordered
         pagination={false}
       />
