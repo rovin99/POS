@@ -167,7 +167,7 @@ const BillsPage = () => {
                       </td>
                       <td className="payment">
                         <h2>
-                          <b>${selectedBill.totalAmount}</b>
+                          <b>${selectedBill.total_amount}</b>
                         </h2>
                       </td>
                     </tr>

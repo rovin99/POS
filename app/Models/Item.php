@@ -9,4 +9,9 @@ class Item extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'price', 'category', 'image','stock'];
+
+    public function bills()
+    {
+        return $this->belongsToMany(Bill::class)->withPivot('quantity', 'price');
+    }
 }

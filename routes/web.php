@@ -22,3 +22,16 @@ Route::post('api/login', [AuthController::class, 'login']);
 
 Route::post('/api/bills', [BillController::class, 'store']);
 Route::get('/api/bills', [BillController::class, 'index']);
+
+
+    Route::get('/api/bills/today-sales', [BillController::class, 'getTodaysSales']);
+    Route::get('/api/bills/this-week-sales', [BillController::class, 'getThisWeeksSales']);
+    Route::get('/api/bills/this-month-sales', [BillController::class, 'getThisMonthsSales']);
+
+
+    Route::get('/api/items/most-sold', [BillController::class, 'getMostSoldItems']);
+
+
+
+    Route::get('/api/bills/monthly-profit', [BillController::class, 'getMonthlyProfit']);
+    Route::get('/api/bills/monthly-sales', [BillController::class, 'getMonthlySales']);

@@ -1,0 +1,14 @@
+#container {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    background-color: #fff;
+  }
+.recent-transaction{
+    font-size: calc(1vw + .8rem);
+}
+.ant-tabs-nav{
+    padding:10px
+}
