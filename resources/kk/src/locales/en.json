@@ -1,0 +1,73 @@
+{
+    "dashboard": {
+      "logoText": "KK IRON",
+      "customersButton": "Customers",
+      "suppliersButton": "Suppliers",
+      "cashbookButton": "Cashbook",
+      "welcomeMessage": "Welcome, {{username}}",
+      "logoutButton": "Log Out"
+    },
+    "login": {
+      "title": "Login",
+      "emailOrPhone": "Email or Phone",
+      "password": "Password",
+      "submit": "Log In",
+      "error": "Login failed"
+    },
+    "common": {
+        "ToDoList": "To Do List",
+        "dailyEntries": "Daily Entries",
+        "title": "Dashboard",
+        "customers": "Customers",
+        "suppliers": "Suppliers",
+        "cashbook": "Cashbook",
+        "own":"Cashbook",
+        "newEntries": "New Entries",
+        "viewEntries": "View Entries",
+        "edit": "Edit",
+        "filter": "Filter",
+        "all": "All",
+        "blacklisted": "Blacklisted",
+        "watch": "Watch",
+        "createUser": "Create User",
+        "searchPlaceholder": "ID, Name, Company, Phone, Address",
+        "balanceLimit":"balance Limit",
+        "addNew": "Add New",
+        "customer": "Customer",
+        "supplier": "Supplier",
+        "close": "Close"
+      },
+      "table": {
+        "id": "#",
+        "name": "Name",
+        "companyName": "Company",
+        "phoneNumber": "Phone",
+        "address": "Address",
+        "entries": "Entries",
+        "mail": "Mail",
+        "actions": "Actions",
+        "noTransactions": "No Transactions",
+        "periodSelect": "Select Period",
+        "30Days": "30 Days",
+        "3Months": "3 Months",
+        "6Months": "6 Months",
+        "1Year": "1 Year",
+        "customerActivity": "Customer Activity",
+        "allTransactions": "All Transactions",
+        "close": "Close",
+        "share": "Share",
+
+        "date": "Date",
+        "description": "Description",
+        "dueDate": "Due Date",
+        "image": "Image",
+        "amountDueClient": "Amount Due",
+        "receivedClient": "Received",
+        "amountReceived": "Amount Received",
+        "amountSend": "Amount Send",
+        "in": "In",
+        "out": "Out",
+        "balance": ""
+      }
+  }
+  

@@ -10,10 +10,13 @@ class AuthMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check()) {
-            return $next($request);
+        $referrer = $request->headers->get('referer');
+        $allowedReferrer = env('APP_URL') . '/Admin';
+        
+        if ($referrer !== $allowedReferrer) {
+            abort(403, 'Unauthorized action.');
         }
-
-        abort(403, 'Unauthorized action.');
+        
+        return $next($request);
     }
 }

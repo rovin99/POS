@@ -1,0 +1,25 @@
+// Definer dine tilpasninger
+$body-bg: #ffffff; // Tilpasning af baggrundsfarven til hvid
+
+$navbar-color: #555; // Definer en standardfarve for navbar links
+$navbar-hover-color: #777; // Definer en hover-farve for navbar links
+$navbar-disabled-color: #ccc; // Definer en disabled-farve for navbar links
+
+// Sørg for at disse tilpasninger er sat før du importerer Bootstrap, så de anvendes korrekt
+@import '~bootstrap/scss/bootstrap.scss'; // Importér Bootstrap efter at have defineret dine tilpasninger
+
+// Tilpasning af navbar-nav klassen
+
+.navbar-nav {
+    --bs-nav-link-padding-x: 0;
+    --bs-nav-link-padding-y: 0.5rem;
+    --bs-nav-link-font-weight: normal; // Du mangler en værdi her, tilføjede "normal"
+    --bs-nav-link-color: var(--bs-navbar-color, $navbar-color); // Brug af CSS variable med en fallback
+    --bs-nav-link-hover-color: var(--bs-navbar-hover-color, $navbar-hover-color);
+    --bs-nav-link-disabled-color: var(--bs-navbar-disabled-color, $navbar-disabled-color);
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}

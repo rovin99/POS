@@ -12,6 +12,7 @@ use App\Http\Controllers\ImageController;
 
 use App\Http\Middleware\AuthMiddleware;
 
+
 Route::post('/create-client-user', [ClientUserController::class, 'createClientUser'])->middleware(AuthMiddleware::class);
 Route::put('/update-user', [ClientUserController::class, 'updateClientUser'])->middleware(AuthMiddleware::class);
 Route::get('/fetch-client-users', [ClientUserController::class, 'fetchClientUsers'])->middleware(AuthMiddleware::class);
@@ -48,7 +49,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/Admin', function () {
+    return view('kk');
+});
 Route::post('api/register', [AuthController::class, 'register']);
 Route::post('api/login', [AuthController::class, 'login']);
 

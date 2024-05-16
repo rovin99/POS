@@ -21,3 +21,22 @@ mix.js('resources/js/src/index.js', 'public/client/js')
     ]
 });
 
+mix.js('resources/kk/src/index.js', 'public/kk/js')
+   .react()
+   
+   .setPublicPath('public');
+
+   mix.browserSync({
+    proxy: 'http://localhost:8000', // Juster til din lokale dev URL
+    open: false,
+    injectChanges: true,
+    files: [
+        'public/admin/js/**/*.js',
+        'public/admin/css/**/*.css',
+        'resources/views/admin/dashboard.blade.php',
+        'resources/js/**/*.jsx', // Tilføj dette hvis du bruger JSX med React
+        'resources/js/**/*.js',
+    ]
+});
+
+

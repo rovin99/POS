@@ -1,0 +1,67 @@
+/* #sidebar-wrapper {
+  height: 100vh;
+  overflow-x: hidden; 
+} */
+
+.nav-icon {
+  position: relative; /* This makes .link-text positioned relative to this */
+  display: inline-block; /* Ensure the container is only as wide as it needs to be */
+}
+
+
+.nav-icon .link-text {
+  visibility: hidden;
+  opacity: 0;
+  width: 120px; /* Or whatever width you prefer */
+  background-color: black; /* Or any color you prefer */
+  color: white; /* Text color */
+  text-align: center;
+  border-radius: 6px;
+  padding: 0px 0; /* Adjust padding to your liking */
+  
+  /* Position the text */
+  position: absolute;
+  z-index: 1; /* Ensure it's above other items */
+  top: 1px;
+  left: 1px;
+  right: 1px; /* Adjust based on your icon sizes */
+  transform: translate(-50%, -50%);
+
+  /* Add transition for the tooltip */
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.nav-icon:hover .link-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.profile-icon {
+  border-top: 1px solid #666;
+  padding-top: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Stil for ikoner inde i navigation links */
+.nav-icon svg {
+  font-size: 20px;
+  margin-bottom: 20px;/* Eller enhver anden størrelse */
+}
+
+/* Stil for tekst inde i navigation links */
+.nav-icon .link-text {
+  font-size: 12px; /* Eller enhver anden størrelse */
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  left: calc(60% + 0px); /* Juster dette baseret på det faktiske layout */
+  white-space: nowrap;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+/* Stil for at vise tekst når hover */
+.nav-icon:hover .link-text {
+  visibility: visible;
+  opacity: 1;
+}
