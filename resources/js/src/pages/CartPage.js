@@ -16,7 +16,7 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.rootReducer);
-  //handle increament
+
   const handleIncreament = (record) => {
     dispatch({
       type: "UPDATE_CART",
@@ -43,7 +43,7 @@ const CartPage = () => {
     { title: "Price", dataIndex: "price" },
     {
       title: "Quantity",
-      dataIndex: "_id",
+      dataIndex: "id",
       render: (id, record) => (
         <div>
           <PlusCircleOutlined
@@ -62,7 +62,7 @@ const CartPage = () => {
     },
     {
       title: "Actions",
-      dataIndex: "_id",
+      dataIndex: "id",
       render: (id, record) => (
         <DeleteOutlined
           style={{ cursor: "pointer" }}
@@ -84,28 +84,33 @@ const CartPage = () => {
   }, [cartItems]);
 
   //handleSubmit
-  const handleSubmit = async (value) => {
-    try {
-      const newObject = {
-        customer_name: value.customerName, // Renamed from 'name' to 'customer_name'
-        customer_number: parseInt(value.customerNumber, 10), // Ensure it's an integer
-        total_amount: Number(
-          Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))
-        ),
-        sub_total: subTotal, // Renamed from 'subTotal' to 'sub_total'
-        tax: Number(((subTotal / 100) * 10).toFixed(2)),
-        payment_mode: value.paymentMode, // Renamed from 'mode' to 'payment_mode'
-        cart_items: cartItems, // Renamed from 'cartItems' to 'cart_items'
-        userId: JSON.parse(localStorage.getItem("auth"))._id,
-      };
-      await axios.post(`${window.App.url}/api/bills`, newObject);
-      message.success("Bill Generated");
-      navigate("/bills");
-    } catch (error) {
-      message.error("Something went wrong");
-      console.log(error);
-    }
-  };
+const handleSubmit = async (value) => {
+  try {
+    const newObject = {
+      customer_name: value.customerName, // Renamed from 'name' to 'customer_name'
+      customer_number: parseInt(value.customerNumber, 10), // Ensure it's an integer
+      total_amount: Number(
+        Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))
+      ),
+      sub_total: subTotal, // Renamed from 'subTotal' to 'sub_total'
+      tax: Number(((subTotal / 100) * 10).toFixed(2)),
+      payment_mode: value.paymentMode, // Renamed from 'mode' to 'payment_mode'
+      cart_items: cartItems, // Renamed from 'cartItems' to 'cart_items'
+      userId: JSON.parse(localStorage.getItem("auth")).id,
+    };
+    await axios.post(`${window.App.url}/api/bills`, newObject);
+    message.success("Bill Generated");
+
+    // Dispatch an action to clear the cart
+    dispatch({ type: "CLEAR_CART" });
+
+    navigate("/bills");
+  } catch (error) {
+    message.error("Something went wrong");
+    console.log(error);
+  }
+};
+
   
   return (
     <DefaultLayout>

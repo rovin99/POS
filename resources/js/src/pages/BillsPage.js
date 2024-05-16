@@ -51,7 +51,7 @@ const BillsPage = () => {
 
     {
       title: "Actions",
-      dataIndex: "_id",
+      dataIndex: "id",
       render: (id, record) => (
         <div>
           <EyeOutlined

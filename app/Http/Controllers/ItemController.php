@@ -27,27 +27,12 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{   
-    $data = $request->all();
+    {   
+        
+        $item = Item::create($request->all());
 
-    switch ($data['category']) {
-        case 'drinks':
-            $data['discount'] = 20;
-            break;
-        case 'rice':
-            $data['discount'] = 10;
-            break;
-        case 'noodles':
-            $data['discount'] = 15;
-            break;
-        default:
-            $data['discount'] = 0; // Default case if none match
+        return response()->json($item, 201);
     }
-
-    $item = Item::create($data);
-
-    return response()->json($item, 201);
-}
 
 
     /**
