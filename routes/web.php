@@ -4,6 +4,39 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ClientUserController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ImageController;
+
+use App\Http\Middleware\AuthMiddleware;
+
+Route::post('/create-client-user', [ClientUserController::class, 'createClientUser'])->middleware(AuthMiddleware::class);
+Route::put('/update-user', [ClientUserController::class, 'updateClientUser'])->middleware(AuthMiddleware::class);
+Route::get('/fetch-client-users', [ClientUserController::class, 'fetchClientUsers'])->middleware(AuthMiddleware::class);
+
+
+Route::post('/create-admin', [AdminController::class, 'createAdmin'])->middleware(AuthMiddleware::class);
+Route::get('/logged-in', [AdminController::class, 'checkLoggedIn'])->middleware(AuthMiddleware::class);
+
+Route::post('/comments/add', [CommentController::class, 'add'])->middleware(AuthMiddleware::class);
+Route::post('/comments/modify', [CommentController::class, 'modify'])->middleware(AuthMiddleware::class);
+Route::get('/comments', [CommentController::class, 'index']);
+
+Route::post('/login', [AdminController::class, 'login']);
+
+Route::get('/transactions', [TransactionController::class, 'getAllTransactions'])->middleware(AuthMiddleware::class);
+Route::get('/transactions/user/{userId}', [TransactionController::class, 'getTransactionsByUser'])->middleware(AuthMiddleware::class);
+Route::get('/transactions/userType/{userType}', [TransactionController::class, 'getTransactionsByUserType'])->middleware(AuthMiddleware::class);
+Route::get('/transactions/latestByUserType', [TransactionController::class, 'getLatestTransactionsByUserType'])->middleware(AuthMiddleware::class);
+Route::get('/transactions/user/{userId}/period/', [TransactionController::class, 'getTransactionsByUserAndPeriod'])->middleware(AuthMiddleware::class);
+Route::get('/transactionsview', [TransactionController::class, 'index'])->middleware(AuthMiddleware::class);
+Route::get('/transactions/transType', [TransactionController::class, 'getTransactionsByTransUser'])->middleware(AuthMiddleware::class);
+Route::post('/add-transaction', [TransactionController::class, 'addTransaction'])->middleware(AuthMiddleware::class);
+
+
+Route::post('/add-image', [ImageController::class, 'addImage'])->middleware(AuthMiddleware::class);
 
 Route::get('/api/items', [ItemController::class , 'index']);
 Route::post('/api/items', [ItemController::class , 'store']);
