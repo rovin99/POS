@@ -73,7 +73,7 @@ const Homepage = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         style={{ marginBottom: 16 }}
-        placeholder="Enter text"
+       
       />
       <Tabs activeKey={selectedCategory} onChange={(key) => setSelectedCategory(key)}>
         {categories.map((category) => (
