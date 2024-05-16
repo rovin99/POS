@@ -119,10 +119,18 @@ class BillController extends Controller
      * Get monthly sales.
      */
     public function getMonthlySales()
-    {
-        $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth = Carbon::now()->endOfMonth();
+{
+    $months = [];
+    for ($i = 0; $i < 5; $i++) {
+        $month = Carbon::now()->subMonth($i);
+        $startOfMonth = $month->startOfMonth();
+        $endOfMonth = $month->endOfMonth();
         $sales = Bill::whereBetween('created_at', [$startOfMonth, $endOfMonth])->sum('total_amount');
-        return response()->json(['sales' => $sales]);
+        $months[] = [
+            'month' => $month->format('M'),
+            'sales' => $sales,
+        ];
     }
+    return response()->json(['data' => $months]);
+}
 }

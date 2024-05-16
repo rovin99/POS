@@ -14,7 +14,7 @@ import {
   Container,
   ButtonGroup,
 } from "react-bootstrap";
-import {} from "react-bootstrap";
+
 import AddTransactionForm from "../AddTransactionForm";
 import CreateUserModal from "../CreateUserModal";
 import TransactionsTable from "../transTable/UserTrans";

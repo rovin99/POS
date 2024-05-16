@@ -80,4 +80,28 @@ public function upload(Request $request)
     return response()->json($items);
 
  }
+ /**
+     * Display the specified resource by ID or name.
+     *
+     * @param  string  $itemIdOrName
+     * @return \Illuminate\Http\Response
+     */
+    public function showByIdOrName($itemIdOrName)
+    {
+       
+        $item = Item::find($itemIdOrName);
+
+       
+        if (!$item) {
+            $item = Item::where('name', $itemIdOrName)->first();
+        }
+
+       
+        if ($item) {
+            return response()->json($item);
+        }
+
+       
+        return response()->json(['message' => 'Item not found'], 404);
+    }
 }

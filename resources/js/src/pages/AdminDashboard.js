@@ -14,6 +14,7 @@ const AdminDashboard = () => {
   const [todaySales, setTodaySales] = useState(0);
   const [numCustomers, setNumCustomers] = useState(0);
   const [outOfStockProducts, setOutOfStockProducts] = useState(0);
+  
   useEffect(() => {
     axios.get('/api/bills/monthly-sales')
     .then(response => {
@@ -91,13 +92,7 @@ const AdminDashboard = () => {
       <Col span={8}>
         <Card title="Monthly Sales">
           <Line
-            data={[
-              { month: 'Jan', sales: 1000 },
-              { month: 'Feb', sales: 1200 },
-              { month: 'Mar', sales: 1100 },
-              { month: 'Apr', sales: 1300 },
-              { month: 'May', sales: 1400 },
-            ]}
+            data={monthlySales}
             xField="month"
             yField="sales"
             seriesField="sales"

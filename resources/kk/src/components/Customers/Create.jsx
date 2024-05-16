@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, Button, Container } from 'react-bootstrap';
+import { Row, Col, Form, Button, Layout,Input,InputNumber,Switch } from 'antd';
 import useCreateUser from '../hooks/useCreateUser';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { useUsers } from '../../fetch/userContext';
-
+const { Content } = Layout;
 function CreateUser({ userType, onClose }) {
   const { refreshUsers } = useUsers(); // Få adgang til din nye refreshUsers funktion
 
@@ -153,110 +153,86 @@ function CreateUser({ userType, onClose }) {
 
   
 
-  return (
-    <Container className="m-3">
-      <Form onSubmit={handleSubmit}>
-  <Row className="mb-3">
-    <Form.Group as={Col}>
-      <Form.Label>{t("table.name")}</Form.Label>
-      <Form.Control
-        type="text"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        required // Kun dette felt er required
-      />
-    </Form.Group>
+return (
+  <Content style={{ padding: '20px' }}>
+    <Form onFinish={handleSubmit}>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            label={t("table.name")}
+            name="name"
+            rules={[{ required: true, message: 'Please input your name!' }]}
+          >
+            <Input onChange={handleChange} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label={t("table.companyName")} name="companyName">
+            <Input onChange={handleChange} />
+          </Form.Item>
+        </Col>
+      </Row>
 
-    <Form.Group as={Col}>
-      <Form.Label>{t("table.companyName")}</Form.Label>
-      <Form.Control
-        type="text"
-        name="companyName"
-        value={formData.companyName}
-        onChange={handleChange}
-      />
-    </Form.Group>
-  </Row>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item label={t("table.phoneNumber")} name="phoneNumber">
+            <Input onChange={handleChange} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label={t("table.mail")} name="email">
+            <Input onChange={handleChange} />
+          </Form.Item>
+        </Col>
+      </Row>
 
-  <Row className="mb-3">
-    <Form.Group as={Col}>
-      <Form.Label>{t("table.phoneNumber")}</Form.Label>
-      <Form.Control
-        type="tel"
-        name="phoneNumber"
-        value={formData.phoneNumber}
-        onChange={handleChange}
-      />
-    </Form.Group>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item label={t("table.address")} name="address">
+            <Input onChange={handleChange} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label={t("common.balanceLimit")} name="balanceLimit">
+            <InputNumber onChange={handleChange} />
+          </Form.Item>
+        </Col>
+      </Row>
 
-    <Form.Group as={Col}>
-      <Form.Label>{t("table.mail")}</Form.Label>
-      <Form.Control
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-      />
-    </Form.Group>
-  </Row>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            label={t("common.watch")}
+            name="watch"
+            valuePropName="checked"
+          >
+            <Switch onChange={handleChange} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label={t("common.blacklisted")}
+            name="blackListed"
+            valuePropName="checked"
+          >
+            <Switch onChange={handleChange} />
+          </Form.Item>
+        </Col>
+      </Row>
 
-  <Row className="mb-3">
-    <Form.Group as={Col}>
-      <Form.Label>{t("table.address")}</Form.Label>
-      <Form.Control
-        type="text"
-        name="address"
-        value={formData.address}
-        onChange={handleChange}
-      />
-    </Form.Group>
-
-    <Form.Group as={Col}>
-      <Form.Label>{t("common.balanceLimit")}</Form.Label>
-      <Form.Control
-        type="number"
-        name="balanceLimit"
-        value={formData.balanceLimit}
-        onChange={handleChange}
-      />
-    </Form.Group>
-  </Row>
-
-  <Row className="mb-3">
-    <Form.Group as={Col}>
-      <Form.Check 
-        type="switch"
-        label=  {t("common.watch")}
-        name="watch"
-        checked={formData.watch === 1}
-        onChange={handleChange}
-      />
-    </Form.Group>
-
-    <Form.Group as={Col}>
-      <Form.Check 
-        type="switch"
-        label= {t("common.blacklisted")}
-        name="blackListed"
-        checked={formData.blackListed === 1}
-        onChange={handleChange}
-      />
-    </Form.Group>
-  </Row>
-
-  <Button variant="primary" type="submit" style={{ margin: "10px" }}>
-  {t("common.createUser")}
-
-  </Button>
-
-  <Button variant="secondary" onClick={onClose} style={{ margin: "10px" }}>
-  {t("common.close")}
-  </Button>
-</Form>
-
-    </Container>
-  );
+      <Row gutter={16}>
+        <Col>
+          <Button type="primary" htmlType="submit" style={{ margin: '10px' }}>
+            {t("common.createUser")}
+          </Button>
+          <Button type="default" onClick={onClose} style={{ margin: '10px' }}>
+            {t("common.close")}
+          </Button>
+        </Col>
+      </Row>
+    </Form>
+  </Content>
+);
 }
 
 export default CreateUser;

@@ -71,3 +71,4 @@ Route::get('/api/bills', [BillController::class, 'index']);
 
     Route::get('/api/bills/monthly-profit', [BillController::class, 'getMonthlyProfit']);
     Route::get('/api/bills/monthly-sales', [BillController::class, 'getMonthlySales']);
+    Route::get('/api/items/{itemIdOrName}', [ItemController::class, 'showByIdOrName']);
