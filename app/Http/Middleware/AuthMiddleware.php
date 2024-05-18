@@ -11,7 +11,7 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         $referrer = $request->headers->get('referer');
-        $allowedReferrer = env('APP_URL') . '/Admin';
+        $allowedReferrer = env('APP_URL') . '/transaction';
         
         if ($referrer !== $allowedReferrer) {
             abort(403, 'Unauthorized action.');

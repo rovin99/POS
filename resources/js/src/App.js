@@ -8,11 +8,13 @@ import Register from "./pages/Register";
 import BillsPage from "./pages/BillsPage";
 import CutomerPage from "./pages/CutomerPage";
 import  AdminDashboard from "./pages/AdminDashboard";
+import Dashboard from "./pages/Dashboard";
+import { AuthProvider } from './locales/AuthContext';
 
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <AuthProvider><BrowserRouter>
         <Routes>
           <Route
             path="/"
@@ -39,7 +41,7 @@ function App() {
             }
           />
           <Route
-            path="/dashboard"
+            path="/admindashboard"
             element={
               <ProtectedRoute>
                 <AdminDashboard />
@@ -62,10 +64,21 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          <Route
+            path="/transaction"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/transaction" element={<Dashboard />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter></AuthProvider>
+      
     </>
   );
 }
