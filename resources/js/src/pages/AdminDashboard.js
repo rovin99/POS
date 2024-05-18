@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Statistic } from 'antd';
 import { Line, Bar, Pie } from '@ant-design/plots';
 import axios from 'axios';
-
+import UnverifiedUsersList from '../components/UnverifiedUsersList';
 const AdminDashboard = () => {
   const [monthlySales, setMonthlySales] = useState(0);
   const [monthlyProfit, setMonthlyProfit] = useState(0);
@@ -14,7 +14,10 @@ const AdminDashboard = () => {
   const [todaySales, setTodaySales] = useState(0);
   const [numCustomers, setNumCustomers] = useState(0);
   const [outOfStockProducts, setOutOfStockProducts] = useState(0);
-  
+  const [unapprovedUsers, setUnapprovedUsers] = useState([]);
+  const handleApproveUser = (userId) => {
+    setUnapprovedUsers(unapprovedUsers.filter(user => user.user_id !== userId));
+  };
   useEffect(() => {
     axios.get('/api/bills/monthly-sales')
     .then(response => {
@@ -84,7 +87,14 @@ const AdminDashboard = () => {
       .catch(error => {
          console.error(error);
        });
-  
+       axios.get('/api/users/unverified')
+    .then(response => {
+      setUnapprovedUsers(response.data.unverified_users);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
   }, []);
 
   return (
@@ -92,7 +102,13 @@ const AdminDashboard = () => {
       <Col span={8}>
         <Card title="Monthly Sales">
           <Line
-            data={monthlySales}
+            data={[
+              { month: 'Jan', sales: 1000 },
+              { month: 'Feb', sales: 1200 },
+              { month: 'Mar', sales: 1100 },
+              { month: 'Apr', sales: 1300 },
+              { month: 'May', sales: 1400 },
+            ]}
             xField="month"
             yField="sales"
             seriesField="sales"
@@ -149,6 +165,11 @@ const AdminDashboard = () => {
       <Col span={8}>
         <Card title="Out of Stock Products">
           <Statistic title="Out of Stock Products" value={outOfStockProducts} />
+        </Card>
+      </Col>
+      <Col span={8}>
+        <Card title="Unverified Users">
+          <UnverifiedUsersList users={unapprovedUsers} onApprove={handleApproveUser} />
         </Card>
       </Col>
     </Row>

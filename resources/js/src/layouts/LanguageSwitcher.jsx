@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import i18n from '../locales/i18nConfig';
 import { Button } from 'react-bootstrap';
 import Cookies from 'js-cookie'; // Import the js-cookie library
-import '../styles/App.css';
+import '../styles/App.module.css';
 
 function LanguageSwitcher() {
   const emoticon = '\u{1F310}'; // Change this to the desired emoticon

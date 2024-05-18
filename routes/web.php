@@ -54,7 +54,8 @@ Route::get('/', function () {
 // });
 Route::post('api/register', [AuthController::class, 'register']);
 Route::post('api/login', [AuthController::class, 'login']);
-
+Route::get('/api/users/unverified', [AuthController::class, 'getUnverifiedUsers']);
+Route::post('/api/users/approve', [AuthController::class, 'approveUser']);
 
 Route::post('/api/bills', [BillController::class, 'store']);
 Route::get('/api/bills', [BillController::class, 'index']);

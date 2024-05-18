@@ -10,7 +10,8 @@ import CutomerPage from "./pages/CutomerPage";
 import  AdminDashboard from "./pages/AdminDashboard";
 import Dashboard from "./pages/Dashboard";
 import { AuthProvider } from './locales/AuthContext';
-
+import './styles/custom.scss';
+import './styles/App.module.css';
 function App() {
   return (
     <>
@@ -73,7 +74,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="/transaction" element={<Dashboard />} /> */}
+         
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

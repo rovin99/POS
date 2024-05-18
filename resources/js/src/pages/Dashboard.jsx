@@ -11,8 +11,7 @@ import { ThemeProvider, useTheme } from "../layouts/ThemeProvider"; // Adjust th
 import UserTable from "./UsersTable";
 import MobileHeader from "../layouts/header";
 import { UserProvider } from '../fetch/userContext'; // Importér UserProvider
-import '../styles/custom.scss';
-import '../styles/App.css';
+
 function Dashboard() {
 
 

@@ -59,7 +59,7 @@ function CustomerModal({ enhancedCustomers }) {
                         key={customer.id}
                         eventKey={String(index)}>
                         <Accordion.Header id="AAModalHeader">
-                          <div className="title-container">
+                          <div className={styles.title-container}>
                             <div className="title-item">
                               <p className="header-pretitle text-muted">Name</p>
                               <span className="header-title text-muted alsoborder">
