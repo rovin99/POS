@@ -34,7 +34,7 @@ mix.js('resources/js/src/index.js', 'public/client/js')
 //     files: [
 //         'public/admin/js/**/*.js',
 //         'public/admin/css/**/*.css',
-//         'resources/views/admin/dashboard.blade.php',
+//         'resources/views/admin/transaction.blade.php',
 //         'resources/js/**/*.jsx', // Tilføj dette hvis du bruger JSX med React
 //         'resources/js/**/*.js',
 //     ]

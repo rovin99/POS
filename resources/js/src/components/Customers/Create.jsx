@@ -83,13 +83,13 @@ function CreateUser({ userType, onClose }) {
             // Navigation baseret på normalizedUserType
             switch (normalizedUserType) {
                 case 'client':
-                    navigate('/dashboard/');
+                    navigate('/transaction/');
                     break;
                 case 'supplier':
-                    navigate('/dashboard/Supplier');
+                    navigate('/transaction/Supplier');
                     break;
                 case 'own':
-                    navigate('/dashboard/Cashbook');
+                    navigate('/transaction/Cashbook');
                     break;
                 default:
                     break;
@@ -121,13 +121,13 @@ function CreateUser({ userType, onClose }) {
 //         await refreshUsers();
 //         switch(normalizedUserType) {
 //             case 'client':
-//                 navigate('/dashboard/');
+//                 navigate('/transaction/');
 //                 break;
 //             case 'supplier':
-//                 navigate('/dashboard/Supplier');
+//                 navigate('/transaction/Supplier');
 //                 break;
 //             case 'own':
-//                 navigate('/dashboard/Cashbook');
+//                 navigate('/transaction/Cashbook');
 //                 break;
 //             default:
 //                 // Du kan navigere til en standardrute eller lade være med at navigere nogen steder

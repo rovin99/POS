@@ -27,20 +27,20 @@ function MobileHeader() {
         <div className="d-flex justify-content-center">
           <Stack direction="horizontal" gap={3} className="align-items-center">
             {/* Navigation items */}
-            <Nav.Link as={Link} to="/dashboard/">
-              <Button variant={location.pathname === "/dashboard/" ? "success" : "outline-success"}>
+            <Nav.Link as={Link} to="/transaction/">
+              <Button variant={location.pathname === "/transaction/" ? "success" : "outline-success"}>
               <FontAwesomeIcon icon={faUsers} /> {t("dashboard.customersButton")}
               </Button>
             </Nav.Link>
-            <Nav.Link as={Link} to="/dashboard/Supplier" className="text-center" style={{ fontSize: "1em", color: 'inherit' }}>
+            <Nav.Link as={Link} to="/transaction/Supplier" className="text-center" style={{ fontSize: "1em", color: 'inherit' }}>
              
-              <Button variant={location.pathname === "/dashboard/Supplier" ? "success" : "outline-success"}>
+              <Button variant={location.pathname === "/transaction/Supplier" ? "success" : "outline-success"}>
               <FontAwesomeIcon icon={faShippingFast} />  {t("dashboard.suppliersButton")}
               </Button>
             </Nav.Link>
-            <Nav.Link as={Link} to="/dashboard/Cashbook" className="text-center" style={{ fontSize: "1.5em", color: 'inherit' }}>
+            <Nav.Link as={Link} to="/transaction/Cashbook" className="text-center" style={{ fontSize: "1.5em", color: 'inherit' }}>
             
-              <Button variant={location.pathname === "/dashboard/Cashbook" ? "success" : "outline-success"}>
+              <Button variant={location.pathname === "/transaction/Cashbook" ? "success" : "outline-success"}>
               <FontAwesomeIcon icon={faWallet} />  {t("dashboard.cashbookButton")}
               </Button>
             </Nav.Link>

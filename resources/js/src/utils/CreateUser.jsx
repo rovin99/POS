@@ -46,7 +46,7 @@ function CreateUser({ userType, onClose }) {
       console.log('User Created:', response.data);
       // Reset the form or navigate the user to another page
       setTimeout(() => {
-        navigate('/dashboard');
+        navigate('/transaction');
       }, 1000);
     })
     .catch(error => {

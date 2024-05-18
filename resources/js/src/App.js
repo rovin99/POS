@@ -13,6 +13,7 @@ import { AuthProvider } from './locales/AuthContext';
 import './styles/custom.scss';
 import './styles/App.module.css';
 function App() {
+  
   return (
     <>
       <AuthProvider><BrowserRouter>
@@ -67,7 +68,7 @@ function App() {
           />
           
           <Route
-            path="/transaction"
+            path="/transaction/*"
             element={
               <ProtectedRoute>
                 <Dashboard />
