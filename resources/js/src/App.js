@@ -11,7 +11,7 @@ import  AdminDashboard from "./pages/AdminDashboard";
 import Dashboard from "./pages/Dashboard";
 import { AuthProvider } from './locales/AuthContext';
 import './styles/custom.scss';
-import './styles/App.module.css';
+import './styles/App.css';
 function App() {
   
   return (

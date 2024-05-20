@@ -6,7 +6,8 @@ import { EyeOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 import axios from "axios";
 import { Modal, Button, Table } from "antd";
-import "../styles/InvoiceStyles.css";
+import styles from "../styles/InvoiceStyles.module.css";
+
 const BillsPage = () => {
   const componentRef = useRef();
   const dispatch = useDispatch();
@@ -86,11 +87,11 @@ const BillsPage = () => {
           footer={false}
         >
           {/* ============ invoice modal start ==============  */}
-          <div id="invoice-POS" ref={componentRef}>
-            <center id="top">
-              <div className="logo" />
-              <div className="info">
-                <h2>Loren Ipsum</h2>
+          <div id={styles["invoice-POS"]} ref={componentRef}>
+            <center id={styles.top}>
+              <div className={styles.logo} />
+              <div className={styles.info}>
+                < h2 className={styles.h2}>Loren Ipsum</h2>
                 <p> Contact : 123456 | Mumbai Maharashtra</p>
               </div>
               {/*End Info*/}
