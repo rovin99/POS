@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import DefaultLayout from "./../components/DefaultLayout";
 import axios from "axios";
-import { Row, Col, Tabs,Input } from "antd";
-import { useDispatch, useSelector } from "react-redux"; // Import useSelector
+import { Row, Col, Tabs, InputGroup, FormControl,Tab } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import ItemList from "../components/ItemList";
 
-const { TabPane } = Tabs;
-const { Search } = Input;
 const Homepage = () => {
   const [itemsData, setItemsData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("drinks");
@@ -18,8 +16,8 @@ const Homepage = () => {
     { name: "noodles" },
   ];
   const dispatch = useDispatch();
-  const cartItems = useSelector(state => state.rootReducer.cartItems); // Access cart items
-  
+  const cartItems = useSelector(state => state.rootReducer.cartItems);
+
   useEffect(() => {
     const getAllItems = async () => {
       try {
@@ -33,6 +31,7 @@ const Homepage = () => {
     };
     getAllItems();
   }, [dispatch]);
+
   const addItemToCart = async (itemIdOrName) => {
     try {
       dispatch({ type: "SHOW_LOADING" });
@@ -52,6 +51,7 @@ const Homepage = () => {
       dispatch({ type: "HIDE_LOADING" });
     }
   };
+
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === 'Enter') {
@@ -59,40 +59,41 @@ const Homepage = () => {
         console.log(inputValue);
       }
     };
-  
+
     document.addEventListener('keydown', handleKeyPress);
-  
+
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
   }, [inputValue]);
+
   return (
     <DefaultLayout>
-      <Search
-        placeholder="Search by item name or ID"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        style={{ marginBottom: 16 }}
-       
-      />
-      <Tabs activeKey={selectedCategory} onChange={(key) => setSelectedCategory(key)}>
+      <InputGroup className="mb-3">
+        <FormControl
+          placeholder="Search by item name or ID"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+      </InputGroup>
+      <Tabs activeKey={selectedCategory} onSelect={(key) => setSelectedCategory(key)} id="uncontrolled-tab-example">
         {categories.map((category) => (
-          <TabPane tab={category.name} key={category.name}>
+          <Tab eventKey={category.name} title={category.name}>
             <Row>
               {itemsData
                .filter((i) => i.category === selectedCategory)
                .map((item) => {
                   const cartItem = cartItems.find(cartItem => cartItem.id === item.id);
-                  const quantityInCart = cartItem? cartItem.quantity : 0; // Determine quantity in cart
+                  const quantityInCart = cartItem? cartItem.quantity : 0;
                   return (
-                    <Col xs={24} lg={6} md={12} sm={6} key={item.id}>
+                    <Col xs={12} lg={6} md={6} sm={12} key={item.id}>
                       <ItemList item={item} />
-                      <p>Quantity in Cart: {quantityInCart}</p> {/* Display quantity */}
+                      <p>Quantity in Cart: {quantityInCart}</p>
                     </Col>
                   );
                 })}
             </Row>
-          </TabPane>
+          </Tab>
         ))}
       </Tabs>
     </DefaultLayout>

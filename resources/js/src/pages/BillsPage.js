@@ -1,11 +1,12 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import { useDispatch } from "react-redux";
-import { EyeOutlined } from "@ant-design/icons";
+import { Eye } from "react-bootstrap-icons"; 
 
 import { useReactToPrint } from "react-to-print";
 import axios from "axios";
-import { Modal, Button, Table } from "antd";
+import { Modal, Button, Table } from "react-bootstrap"; 
 import styles from "../styles/InvoiceStyles.module.css";
 
 const BillsPage = () => {
@@ -14,6 +15,7 @@ const BillsPage = () => {
   const [billsData, setBillsData] = useState([]);
   const [popupModal, setPopupModal] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
+
   const getAllBills = async () => {
     try {
       dispatch({
@@ -28,65 +30,73 @@ const BillsPage = () => {
       console.log(error);
     }
   };
-  //useEffect
+
   useEffect(() => {
     getAllBills();
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
-  //print function
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-  //able data
   const columns = [
-    { title: "ID ", dataIndex: "id" },
-    {
-      title: "Cutomer Name",
-      dataIndex: "customer_name",
-    },
-    { title: "Contact No", dataIndex: "customer_number" },
-    { title: "Subtotal", dataIndex: "sub_total" },
-    { title: "Tax", dataIndex: "tax" },
-    { title: "Total Amount", dataIndex: "total_amount" },
-
+    { title: "ID", field: "id" },
+    { title: "Customer Name", field: "customer_name" },
+    { title: "Contact No", field: "customer_number" },
+    { title: "Subtotal", field: "sub_total" },
+    { title: "Tax", field: "tax" },
+    { title: "Total Amount", field: "total_amount" },
     {
       title: "Actions",
-      dataIndex: "id",
-      render: (id, record) => (
-        <div>
-          <EyeOutlined
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              setSelectedBill(record);
-              setPopupModal(true);
-            }}
-          />
-        </div>
+      field: "actions",
+      formatter: (_, row) => (
+        <Eye
+          size={44}
+          onClick={() => {
+            setSelectedBill(row);
+            setPopupModal(true);
+          }}
+        />
       ),
     },
   ];
-  console.log(selectedBill);
+
   return (
     <DefaultLayout>
-      <div className="d-flex justify-content-between">
-        <h1>Invoice list</h1>
+      <div className="d-flex justify-content-between mb-3">
+        <h1>Invoice List</h1>
       </div>
 
-      <Table columns={columns} dataSource={billsData} bordered />
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <th key={column.field}>{column.title}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {billsData.map((bill) => (
+            <tr key={bill.id}>
+              {columns.map((column) =>
+                column.formatter? (
+                  column.formatter(bill[column.field], bill)
+                ) : (
+                  <td key={column.field}>{bill[column.field]}</td>
+                )
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </Table>
 
       {popupModal && (
-        <Modal
-          width={400}
-          pagination={false}
-          title="Invoice Details"
-          visible={popupModal}
-          onCancel={() => {
-            setPopupModal(false);
-          }}
-          footer={false}
-        >
-          {/* ============ invoice modal start ==============  */}
+        <Modal show={popupModal} onHide={() => setPopupModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Invoice Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
           <div id={styles["invoice-POS"]} ref={componentRef}>
             <center id={styles.top}>
               <div className={styles.logo} />
@@ -187,13 +197,18 @@ const BillsPage = () => {
             </div>
             {/*End InvoiceBot*/}
           </div>
-          {/*End Invoice*/}
-          <div className="d-flex justify-content-end mt-3">
-            <Button type="primary" onClick={handlePrint}>
+          
+          
+
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setPopupModal(false)}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handlePrint}>
               Print
             </Button>
-          </div>
-          {/* ============ invoice modal ends ==============  */}
+          </Modal.Footer>
         </Modal>
       )}
     </DefaultLayout>
