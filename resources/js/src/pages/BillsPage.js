@@ -52,7 +52,7 @@ const BillsPage = () => {
       field: "actions",
       formatter: (_, row) => (
         <Eye
-          size={44}
+          size={34}
           onClick={() => {
             setSelectedBill(row);
             setPopupModal(true);
@@ -101,15 +101,15 @@ const BillsPage = () => {
             <center id={styles.top}>
               <div className={styles.logo} />
               <div className={styles.info}>
-                < h2 className={styles.h2}>Loren Ipsum</h2>
-                <p> Contact : 123456 | Mumbai Maharashtra</p>
+                <div className={styles.normal}>Loren Ipsum</div>
+                <p className={styles.p}> Contact : 123456 | Mumbai Maharashtra</p>
               </div>
               {/*End Info*/}
             </center>
             {/*End InvoiceTop*/}
             <div id="mid">
               <div className="mt-2">
-                <p>
+                <p className={styles.p}>
                   Customer Name : <b>{selectedBill.customer_name}</b>
                   <br />
                   Phone No : <b>{selectedBill.customer_number}</b>
@@ -127,16 +127,20 @@ const BillsPage = () => {
                   <tbody>
                     <tr className="tabletitle">
                       <td className="item">
-                        <h2>Item</h2>
+                        <div className={styles.normal}>Item</div>
+                        
                       </td>
                       <td className="Hours">
-                        <h2>Qty</h2>
+                        <div className={styles.normal}>Oty</div>
+                        
                       </td>
                       <td className="Rate">
-                        <h2>Price</h2>
+                      <div className={styles.normal}>Price</div>
+                        
                       </td>
                       <td className="Rate">
-                        <h2>Total</h2>
+                      <div className={styles.normal}>Total</div>
+                        
                       </td>
                     </tr>
                     {selectedBill.cart_items.map((item) => (
@@ -164,22 +168,23 @@ const BillsPage = () => {
                       <td />
                       <td />
                       <td className="Rate">
-                        <h2>tax</h2>
+                      <div className={styles.normal}>tax</div>
                       </td>
                       <td className="payment">
-                        <h2>${selectedBill.tax}</h2>
+                      <div className={styles.normal}>${selectedBill.tax}</div>
+                        
                       </td>
                     </tr>
                     <tr className="tabletitle">
                       <td />
                       <td />
                       <td className="Rate">
-                        <h2>Grand Total</h2>
+                      <div className={styles.normal}>Grand Total</div>
+                        
                       </td>
                       <td className="payment">
-                        <h2>
-                          <b>${selectedBill.total_amount}</b>
-                        </h2>
+                         <div className={styles.normal}> <b>${selectedBill.total_amount}</b></div>
+                        
                       </td>
                     </tr>
                   </tbody>

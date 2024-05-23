@@ -1,107 +1,91 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Layout, Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { Navbar, Nav, Container, Offcanvas } from "react-bootstrap";
 import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  LogoutOutlined,
-  HomeOutlined,
-  CopyOutlined,
-  UnorderedListOutlined,
-  ShoppingCartOutlined,
-  MoneyCollectOutlined,
-  BarChartOutlined
-} from "@ant-design/icons";
+  House,
+  BarChart,
+  CreditCard,
+  Clipboard,
+  ListUl,
+  Person,
+  BoxArrowRight,
+  Cart,
+} from "react-bootstrap-icons";
 import "../styles/DefaultLayout.css";
 import Spinner from "./Spinner";
-const { Header, Sider, Content } = Layout;
 
 const DefaultLayout = ({ children }) => {
   const navigate = useNavigate();
   const { cartItems, loading } = useSelector((state) => state.rootReducer);
-  const [collapsed, setCollapsed] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-  const toggle = () => {
-    setCollapsed(!collapsed);
-  };
-  //to get localstorage data
+  // to get localstorage data
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
   return (
-    <Layout>
+    <div>
       {loading && <Spinner />}
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo">
-          <h1 className="text-center text-light font-wight-bold mt-4">POS</h1>
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={window.location.pathname}
-        >
-          <Menu.Item key="/" icon={<HomeOutlined />}>
-            <Link to="/">Home</Link>
-          </Menu.Item>
-          <Menu.Item key="/admindashboard" icon={<BarChartOutlined  />}>
-            <Link to="/admindashboard">Dashboard</Link>
-          </Menu.Item>
-          <Menu.Item key="/transaction" icon={<MoneyCollectOutlined />}>
-            <Link to="/transaction">Transactions</Link>
-          </Menu.Item>
-          <Menu.Item key="/bills" icon={<CopyOutlined />}>
-            <Link to="/bills">Bills</Link>
-          </Menu.Item>
-          <Menu.Item key="/items" icon={<UnorderedListOutlined />}>
-            <Link to="/items">Items</Link>
-          </Menu.Item>
-          <Menu.Item key="/customers" icon={<UserOutlined />}>
-            <Link to="/customers">Cutomers</Link>
-          </Menu.Item>
-          <Menu.Item
-            key="/logout"
-            icon={<LogoutOutlined />}
-            onClick={() => {
-              localStorage.removeItem("auth");
-              navigate("/login");
-            }}
+      <Navbar bg="dark" variant="dark" expand={false}>
+        <Container fluid>
+          <Navbar.Brand href="#">POS</Navbar.Brand>
+          <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
+          <Navbar.Offcanvas
+            id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel"
+            placement="start"
+            show={show}
+            onHide={handleClose}
           >
-            Logout
-          </Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger",
-              onClick: toggle,
-            }
-          )}
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="flex-column">
+                <Nav.Link as={Link} to="/" onClick={handleClose}>
+                  <House className="mr-2" /> Home
+                </Nav.Link>
+                <Nav.Link as={Link} to="/admindashboard" onClick={handleClose}>
+                  <BarChart className="mr-2" /> Dashboard
+                </Nav.Link>
+                <Nav.Link as={Link} to="/transaction" onClick={handleClose}>
+                  <CreditCard className="mr-2" /> Transactions
+                </Nav.Link>
+                <Nav.Link as={Link} to="/bills" onClick={handleClose}>
+                  <Clipboard className="mr-2" /> Bills
+                </Nav.Link>
+                <Nav.Link as={Link} to="/items" onClick={handleClose}>
+                  <ListUl className="mr-2" /> Items
+                </Nav.Link>
+                <Nav.Link as={Link} to="/customers" onClick={handleClose}>
+                  <Person className="mr-2" /> Customers
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    localStorage.removeItem("auth");
+                    navigate("/login");
+                  }}
+                >
+                  <BoxArrowRight className="mr-2" /> Logout
+                </Nav.Link>
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
           <div
-            className="cart-item d-flex jusitfy-content-space-between flex-row"
+            className="cart-item d-flex justify-content-between flex-row"
             onClick={() => navigate("/cart")}
           >
             <p>{cartItems.length}</p>
-            <ShoppingCartOutlined />
+            <Cart />
           </div>
-        </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
-          {children}
-        </Content>
-      </Layout>
-    </Layout>
+        </Container>
+      </Navbar>
+      <Container fluid>{children}</Container>
+    </div>
   );
 };
 

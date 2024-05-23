@@ -4,11 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Button, Modal, Form } from "react-bootstrap";
-import { DeleteOutlined, PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons"; // You might need to find alternatives for these icons
+import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa";
 
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0);
-  const [showBillPopup, setShowBillPopup] = useState(false); // Changed to showBillPopup for consistency with React Bootstrap naming convention
+  const [showBillPopup, setShowBillPopup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.rootReducer);
@@ -16,15 +16,15 @@ const CartPage = () => {
   const handleIncrement = (record) => {
     dispatch({
       type: "UPDATE_CART",
-      payload: {...record, quantity: record.quantity + 1 },
+      payload: { ...record, quantity: record.quantity + 1 },
     });
   };
 
   const handleDecrement = (record) => {
-    if (record.quantity!== 1) {
+    if (record.quantity !== 1) {
       dispatch({
         type: "UPDATE_CART",
-        payload: {...record, quantity: record.quantity - 1 },
+        payload: { ...record, quantity: record.quantity - 1 },
       });
     }
   };
@@ -44,13 +44,13 @@ const CartPage = () => {
       dataIndex: "id",
       render: (id, record) => (
         <div>
-          <PlusCircleOutlined
+          <FaPlus
             className="mx-3"
             style={{ cursor: "pointer" }}
             onClick={() => handleIncrement(record)}
           />
           <b>{record.quantity}</b>
-          <MinusCircleOutlined
+          <FaMinus
             className="mx-3"
             style={{ cursor: "pointer" }}
             onClick={() => handleDecrement(record)}
@@ -62,7 +62,7 @@ const CartPage = () => {
       title: "Actions",
       dataIndex: "id",
       render: (id, record) => (
-        <DeleteOutlined
+        <FaTrashAlt
           style={{ cursor: "pointer" }}
           onClick={() =>
             dispatch({
@@ -82,7 +82,7 @@ const CartPage = () => {
   }, [cartItems]);
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
     const formData = new FormData(event.target);
     const value = Object.fromEntries(formData.entries());
 
@@ -90,7 +90,9 @@ const CartPage = () => {
       const newObject = {
         customer_name: value.customerName,
         customer_number: parseInt(value.customerNumber, 10),
-        total_amount: Number(Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))),
+        total_amount: Number(
+          Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))
+        ),
         sub_total: subTotal,
         tax: Number(((subTotal / 100) * 10).toFixed(2)),
         payment_mode: value.paymentMode,
@@ -98,12 +100,12 @@ const CartPage = () => {
         userId: JSON.parse(localStorage.getItem("auth")).id,
       };
       await axios.post(`${window.App.url}/api/bills`, newObject);
-      alert("Bill Generated"); // Using native alert for simplicity
+      alert("Bill Generated");
 
       dispatch({ type: "CLEAR_CART" });
       navigate("/bills");
     } catch (error) {
-      alert("Something went wrong"); // Using native alert for simplicity
+      alert("Something went wrong");
       console.log(error);
     }
   };
@@ -124,7 +126,9 @@ const CartPage = () => {
             <tr key={rowIndex}>
               {columns.map((column, colIndex) => (
                 <td key={colIndex}>
-                  {column.render? column.render(item[column.dataIndex], item) : item[column.dataIndex]}
+                  {column.render
+                    ? column.render(item[column.dataIndex], item)
+                    : item[column.dataIndex]}
                 </td>
               ))}
             </tr>
@@ -133,38 +137,49 @@ const CartPage = () => {
       </Table>
       <div className="d-flex flex-column align-items-end mt-3">
         <hr />
-        <h3>SUBTOTAL: ${subTotal}</h3>
-        <Button variant="primary" onClick={() => setShowBillPopup(true)}>Create Invoice</Button>
+        <h4 style={{ color: "#222" }}>
+          SUBT TOTAL : $ <b> {subTotal}</b> /-{" "}
+        </h4>
+        <Button variant="primary" onClick={() => setShowBillPopup(true)}>
+          Create Invoice
+        </Button>
       </div>
 
       <Modal show={showBillPopup} onHide={() => setShowBillPopup(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Create Invoice</Modal.Title>
+          <Modal.Title style={{ color: "#222" }}>Create Invoice</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formCustomerName">
-              <Form.Label>Customer Name</Form.Label>
+              <Form.Label style={{ color: "#222" }}>Customer Name</Form.Label>
               <Form.Control type="text" name="customerName" required />
             </Form.Group>
             <Form.Group controlId="formCustomerNumber">
-              <Form.Label>Contact Number</Form.Label>
+              <Form.Label style={{ color: "#222" }}>Contact Number</Form.Label>
               <Form.Control type="text" name="customerNumber" required />
             </Form.Group>
             <Form.Group controlId="formPaymentMode">
-              <Form.Label>Payment Method</Form.Label>
+              <Form.Label style={{ color: "#222" }}>Payment Method</Form.Label>
               <Form.Select name="paymentMode" required>
                 <option value="cash">Cash</option>
                 <option value="card">Card</option>
               </Form.Select>
             </Form.Group>
-            <div className="mt-3">
-              <h5>Sub Total: ${subTotal}</h5>
-              <h4>TAX: ${(subTotal / 100 * 10).toFixed(2)}</h4>
-              <h3>GRAND TOTAL: ${Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))}</h3>
+            <div className="bill-it">
+              <h6 style={{ color: "#222" }}>Sub Total: ${subTotal}</h6>
+              <h5 style={{ color: "#222" }}>
+                TAX: ${(subTotal / 100 * 10).toFixed(2)}
+              </h5>
+              <h4 style={{ color: "#222" }}>
+                GRAND TOTAL: $
+                {Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))}
+              </h4>
             </div>
             <div className="d-flex justify-content-end mt-3">
-              <Button variant="primary" type="submit">Generate Bill</Button>
+              <Button variant="primary" type="submit">
+                Generate Bill
+              </Button>
             </div>
           </Form>
         </Modal.Body>

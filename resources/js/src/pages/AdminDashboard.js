@@ -1,10 +1,10 @@
 
-
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Statistic } from 'antd';
+import { Row, Col, Card, CardBody, CardTitle } from 'react-bootstrap';
 import { Line, Bar, Pie } from '@ant-design/plots';
 import axios from 'axios';
 import UnverifiedUsersList from '../components/UnverifiedUsersList';
+
 const AdminDashboard = () => {
   const [monthlySales, setMonthlySales] = useState(0);
   const [monthlyProfit, setMonthlyProfit] = useState(0);
@@ -16,9 +16,10 @@ const AdminDashboard = () => {
   const [outOfStockProducts, setOutOfStockProducts] = useState(0);
   const [unapprovedUsers, setUnapprovedUsers] = useState([]);
   const handleApproveUser = (userId) => {
-    setUnapprovedUsers(unapprovedUsers.filter(user => user.user_id !== userId));
+    setUnapprovedUsers(unapprovedUsers.filter(user => user.user_id!== userId));
   };
-  useEffect(() => {
+
+    useEffect(() => {
     axios.get('/api/bills/monthly-sales')
     .then(response => {
         
@@ -98,78 +99,105 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <Row gutter={16}>
-      <Col span={8}>
-        <Card title="Monthly Sales">
-          <Line
-            data={[
-              { month: 'Jan', sales: 1000 },
-              { month: 'Feb', sales: 1200 },
-              { month: 'Mar', sales: 1100 },
-              { month: 'Apr', sales: 1300 },
-              { month: 'May', sales: 1400 },
-            ]}
-            xField="month"
-            yField="sales"
-            seriesField="sales"
-          />
-          <Statistic title="Monthly Sales" value={monthlySales} />
+    <Row className="justify-content-md-center">
+      <Col md={4}>
+        <Card>
+          <CardTitle>Monthly Sales</CardTitle>
+          <CardBody>
+            <Line
+              data={[
+                { month: 'Jan', sales: 1000 },
+                { month: 'Feb', sales: 1200 },
+                { month: 'Mar', sales: 1100 },
+                { month: 'Apr', sales: 1300 },
+                { month: 'May', sales: 1400 },
+              ]}
+              xField="month"
+              yField="sales"
+              seriesField="sales"
+            />
+            <h5>Monthly Sales: {monthlySales}</h5>
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="Monthly Profit">
-          <Bar
-            data={[
-              { month: 'Jan', profit: 200 },
-              { month: 'Feb', profit: 250 },
-              { month: 'Mar', profit: 220 },
-              { month: 'Apr', profit: 280 },
-              { month: 'May', profit: 300 },
-            ]}
-            xField="month"
-            yField="profit"
-            seriesField="profit"
-          />
-          <Statistic title="Monthly Profit" value={monthlyProfit} />
+      <Col md={4}>
+        <Card>
+          <CardTitle>Monthly Profit</CardTitle>
+          <CardBody>
+            <Bar
+              data={[
+                { month: 'Jan', profit: 200 },
+                { month: 'Feb', profit: 250 },
+                { month: 'Mar', profit: 220 },
+                { month: 'Apr', profit: 280 },
+                { month: 'May', profit: 300 },
+              ]}
+              xField="month"
+              yField="profit"
+              seriesField="profit"
+            />
+            <h5>Monthly Profit: {monthlyProfit}</h5>
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="Most Sold Products">
-          <Pie
-            data={mostSoldProducts.map(item => ({ name: item.name, value: item.sales }))}
-            angleField="value"
-            colorField="name"
-          />
+      <Col md={4}>
+        <Card>
+          <CardTitle>Most Sold Products</CardTitle>
+          <CardBody>
+            <Pie
+              data={mostSoldProducts.map(item => ({ name: item.name, value: item.sales }))}
+              angleField="value"
+              colorField="name"
+            />
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="This Month Sales">
-          <Statistic title="This Month Sales" value={thisMonthSales} />
+      <Col md={4}>
+        <Card>
+          <CardTitle>This Month Sales</CardTitle>
+          <CardBody>
+            <h5> {thisMonthSales}</h5>
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="This Week Sales">
-          <Statistic title="This Week Sales" value={thisWeekSales} />
+      <Col md={4}>
+        <Card>
+          <CardTitle>This Week Sales</CardTitle>
+          <CardBody>
+            <h5> {thisWeekSales}</h5>
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="Today Sales">
-          <Statistic title="Today Sales" value={todaySales} />
+      <Col md={4}>
+        <Card>
+          <CardTitle>Today Sales</CardTitle>
+          <CardBody>
+            <h5> {todaySales}</h5>
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="Number of Customers">
-          <Statistic title="Number of Customers" value={numCustomers} />
+      <Col md={4}>
+        <Card>
+          <CardTitle>Number of Customers</CardTitle>
+          <CardBody>
+            <h5>{numCustomers}</h5>
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="Out of Stock Products">
-          <Statistic title="Out of Stock Products" value={outOfStockProducts} />
+      <Col md={4}>
+        <Card>
+          <CardTitle>Out of Stock Products</CardTitle>
+          <CardBody>
+            <h5>{outOfStockProducts}</h5>
+          </CardBody>
         </Card>
       </Col>
-      <Col span={8}>
-        <Card title="Unverified Users">
-          <UnverifiedUsersList users={unapprovedUsers} onApprove={handleApproveUser} />
+      <Col md={4}>
+        <Card>
+          <CardTitle>Unverified Users</CardTitle>
+          <CardBody>
+             <UnverifiedUsersList users={unapprovedUsers} onApprove={handleApproveUser} />
+          </CardBody>
         </Card>
       </Col>
     </Row>

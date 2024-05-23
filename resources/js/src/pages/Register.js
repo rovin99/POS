@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { message } from "antd"; 
+
 import axios from "axios";
 import { useDispatch } from "react-redux";
-
+import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,12 +21,12 @@ const Register = () => {
         type: "SHOW_LOADING",
       });
       await axios.post(`${window.App.url}/api/register`, value);
-      message.success("Register Successfully");
+      toast.success("Register Successfully");
       navigate("/login");
       dispatch({ type: "HIDE_LOADING" });
     } catch (error) {
       dispatch({ type: "HIDE_LOADING" });
-      message.error("Something Went Wrong");
+      toast.error("Something Went Wrong");
       console.log(error);
     }
   };
@@ -36,6 +38,8 @@ const Register = () => {
   }, [navigate]);
 
   return (
+    <>
+    <ToastContainer />
     <div className="register">
       <div className="register-form">
         <h1>POS APP</h1>
@@ -65,6 +69,7 @@ const Register = () => {
         </Form>
       </div>
     </div>
+    </>
   );
 };
 

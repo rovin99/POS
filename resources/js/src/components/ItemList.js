@@ -1,28 +1,28 @@
-import React from "react";
-import { Button, Card } from "antd";
-import { useDispatch } from "react-redux";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Card, Button } from 'react-bootstrap';
+
 const ItemList = ({ item }) => {
   const dispatch = useDispatch();
-  //update cart handler
-  const handleAddTOCart = () => {
+
+  // Update cart handler
+  const handleAddToCart = () => {
     dispatch({
-      type: "ADD_TO_CART",
+      type: 'ADD_TO_CART',
       payload: { ...item, quantity: 1 },
     });
   };
-  const { Meta } = Card;
+
   return (
-    <div>
-      <Card
-        style={{ width: 240, marginBottom: 20 }}
-        cover={<img alt={item.name} src={item.image} style={{ height: 200 }} />}
-      >
-        <Meta title={item.name} />
-        <div className="item-button">
-          <Button onClick={() => handleAddTOCart()}>Add to cart</Button>
-        </div>
-      </Card>
-    </div>
+    <Card style={{ width: '18rem', marginBottom: '20px' }}>
+      <Card.Img variant="top" src={item.image} alt={item.name} style={{ height: '200px', objectFit: 'cover' }} />
+      <Card.Body>
+        <Card.Title>{item.name}</Card.Title>
+        <Button variant="primary" onClick={handleAddToCart}>
+          Add to Cart
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 
