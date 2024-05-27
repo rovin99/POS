@@ -30,7 +30,7 @@ const DefaultLayout = ({ children }) => {
   return (
     <div>
       {loading && <Spinner />}
-      <Navbar bg="dark" variant="dark" expand={false}>
+      <Navbar  expand={false}>
         <Container fluid>
           <Navbar.Brand href="#">POS</Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />

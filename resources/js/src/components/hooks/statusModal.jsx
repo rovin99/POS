@@ -11,7 +11,7 @@ import {
   ListGroup,
   Col,
 } from "react-bootstrap";
-import CommentStatusIcon from './Status/comments/CommentStatusIcon'; // Opdater stien til hvor din fil faktisk er placeret
+import CommentStatusIcon from './Status/comments/CommentStatusIcon'; 
 import { FaTasks } from "react-icons/fa";
 import CommentsTaskList from './Status/comments/tasklist'; 
 

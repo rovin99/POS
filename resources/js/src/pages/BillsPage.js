@@ -2,20 +2,26 @@
 import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import { useDispatch } from "react-redux";
-import { Eye } from "react-bootstrap-icons"; 
+import { Eye,Gear } from "react-bootstrap-icons"; 
 
 import { useReactToPrint } from "react-to-print";
 import axios from "axios";
 import { Modal, Button, Table } from "react-bootstrap"; 
 import styles from "../styles/InvoiceStyles.module.css";
-
+import InvoiceEditor from '../components/InvoiceEditor';
 const BillsPage = () => {
   const componentRef = useRef();
   const dispatch = useDispatch();
   const [billsData, setBillsData] = useState([]);
   const [popupModal, setPopupModal] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
+  const [showInvoiceEditor, setShowInvoiceEditor] = useState(false);
+  const [selectedBillForEditing, setSelectedBillForEditing] = useState(null);
 
+  const handleEditInvoice = (bill) => {
+    setSelectedBillForEditing(bill);
+    setShowInvoiceEditor(true);
+  };
   const getAllBills = async () => {
     try {
       dispatch({
@@ -51,6 +57,7 @@ const BillsPage = () => {
       title: "Actions",
       field: "actions",
       formatter: (_, row) => (
+        <>
         <Eye
           size={34}
           onClick={() => {
@@ -58,6 +65,11 @@ const BillsPage = () => {
             setPopupModal(true);
           }}
         />
+        <Gear
+          size={34}
+          onClick={() => handleEditInvoice(row)}
+        />
+        </>
       ),
     },
   ];
@@ -67,7 +79,13 @@ const BillsPage = () => {
       <div className="d-flex justify-content-between mb-3">
         <h1>Invoice List</h1>
       </div>
-
+      {showInvoiceEditor && (
+        <InvoiceEditor
+          bill={selectedBillForEditing}
+          onClose={() => setShowInvoiceEditor(false)}
+          getAllBills={getAllBills}
+        />
+      )}
       <Table striped bordered hover>
         <thead>
           <tr>

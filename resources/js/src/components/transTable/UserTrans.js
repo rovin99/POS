@@ -17,18 +17,22 @@ import { useTranslation } from "react-i18next";
 import DateFilterDropdown from "../hooks/DateFilterDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-const TransactionsTable = ({
-  transactions,
-  selectedUser,
-  setShowModal,
-  period,
-  setPeriod,
-  customEndDate,
-  setCustomEndDate,
-  customStartDate,
-  setCustomStartDate,
-  onTransactionAdded,
-}) => {
+function TransactionsTable(props) {
+  const {
+    transactions,
+    selectedUser,
+    period,
+    setPeriod,
+    customEndDate,
+    setCustomEndDate,
+    customStartDate,
+    setCustomStartDate,
+    responsive,
+    onTransactionAdded,
+    ref,
+  } = props;
+
+  
   const tableRef = useRef();
   const [showFullScreenImageModal, setShowFullScreenImageModal] =
     useState(false);
@@ -54,8 +58,16 @@ const TransactionsTable = ({
       // Tilføj flere felter her efter behov
     ].join(' ').toLowerCase();
 
-    // Tjekker, om den samlede datastreng indeholder søgetermen
-    return transactionData.includes(searchTerm.toLowerCase());
+    const isSearchTermMatched = transactionData.includes(searchTerm.toLowerCase());
+
+   
+  // New filter condition for start and end dates
+  const transactionDate = new Date(transaction.transactionDate);
+  const isDateWithinRange =
+    (!customStartDate || transactionDate >= new Date(customStartDate)) &&
+    (!customEndDate || transactionDate <= new Date(customEndDate));
+
+  return isSearchTermMatched && isDateWithinRange;
   });
 
   function determineFontColorTransac(value) {

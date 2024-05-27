@@ -31,7 +31,7 @@ Route::get('/transactions', [TransactionController::class, 'getAllTransactions']
 Route::get('/transactions/user/{userId}', [TransactionController::class, 'getTransactionsByUser'])->middleware(AuthMiddleware::class);
 Route::get('/transactions/userType/{userType}', [TransactionController::class, 'getTransactionsByUserType'])->middleware(AuthMiddleware::class);
 Route::get('/transactions/latestByUserType', [TransactionController::class, 'getLatestTransactionsByUserType'])->middleware(AuthMiddleware::class);
-Route::get('/transactions/user/{userId}/period/', [TransactionController::class, 'getTransactionsByUserAndPeriod'])->middleware(AuthMiddleware::class);
+Route::get('/transactions/user/{userId}/period/', [TransactionController::class, 'getTransactionsByUserAndPeriod']);
 Route::get('/transactionsview', [TransactionController::class, 'index'])->middleware(AuthMiddleware::class);
 Route::get('/transactions/transType', [TransactionController::class, 'getTransactionsByTransUser'])->middleware(AuthMiddleware::class);
 Route::post('/add-transaction', [TransactionController::class, 'addTransaction'])->middleware(AuthMiddleware::class);
@@ -59,7 +59,7 @@ Route::post('/api/users/approve', [AuthController::class, 'approveUser']);
 
 Route::post('/api/bills', [BillController::class, 'store']);
 Route::get('/api/bills', [BillController::class, 'index']);
-
+Route::put('/api/bills/{id}', [BillController::class, 'update']);
 
     Route::get('/api/bills/today-sales', [BillController::class, 'getTodaysSales']);
     Route::get('/api/bills/this-week-sales', [BillController::class, 'getThisWeeksSales']);

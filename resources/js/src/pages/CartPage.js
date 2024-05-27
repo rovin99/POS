@@ -167,7 +167,7 @@ const CartPage = () => {
               </Form.Select>
             </Form.Group>
             <div className="bill-it">
-              <h6 style={{ color: "#222" }}>Sub Total: ${subTotal}</h6>
+              <h6 style={{ color: "grey" }}>Sub Total: ${subTotal}</h6>
               <h5 style={{ color: "#222" }}>
                 TAX: ${(subTotal / 100 * 10).toFixed(2)}
               </h5>

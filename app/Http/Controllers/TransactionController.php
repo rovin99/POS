@@ -69,36 +69,44 @@ class TransactionController extends Controller
     public function getTransactionsByUserAndPeriod($userId, Request $request)
 {
     $period = $request->input('period');
-    if ($period === null) {
-        return response()->json(['error' => 'Period must be specified'], 400);
+    $customStartDate = $request->input('customStartDate');
+    $customEndDate = $request->input('customEndDate');
+
+    if ($period === null && ($customStartDate === null || $customEndDate === null)) {
+        return response()->json(['error' => 'Period or custom dates must be specified'], 400);
     }
 
     $startDate = null;
     $endDate = null;
 
-    switch ($period) {
-        case 'all':
-            $startDate = Transaction::min('transactionDate');
-            $endDate = now();
-            break;
-        case '30d':
-            $startDate = now()->subDays(30);
-            $endDate = now()->addDay(); // add a day to include today
-            break;
-        case '3m':
-            $startDate = now()->subMonths(3);
-            $endDate = now()->addDay(); // add a day to include today
-            break;
-        case '6m':
-            $startDate = now()->subMonths(6);
-            $endDate = now()->addDay(); // add a day to include today
-            break;
-        case '1yr':
-            $startDate = now()->subYear();
-            $endDate = now()->addDay(); // add a day to include today
-            break;
-        default:
-            return response()->json(['error' => 'Invalid period specified'], 400);
+    if ($customStartDate !== null && $customEndDate !== null) {
+        $startDate = date('Y-m-d', strtotime($customStartDate));
+        $endDate = date('Y-m-d', strtotime($customEndDate));
+    } else {
+        switch ($period) {
+            case 'all':
+                $startDate = Transaction::min('transactionDate');
+                $endDate = now();
+                break;
+            case '30d':
+                $startDate = now()->subDays(30);
+                $endDate = now()->addDay(); // add a day to include today
+                break;
+            case '3m':
+                $startDate = now()->subMonths(3);
+                $endDate = now()->addDay(); // add a day to include today
+                break;
+            case '6m':
+                $startDate = now()->subMonths(6);
+                $endDate = now()->addDay(); // add a day to include today
+                break;
+            case '1yr':
+                $startDate = now()->subYear();
+                $endDate = now()->addDay(); // add a day to include today
+                break;
+            default:
+                return response()->json(['error' => 'Invalid period specified'], 400);
+        }
     }
 
     \Log::info('Start Date: ' . $startDate);
@@ -115,12 +123,9 @@ class TransactionController extends Controller
         ->orderBy('transactionId', 'desc')
         ->get();
 
-   
     $currentBalance = $totalBalance;
     foreach ($transactions as $transaction) {
-        
         $transaction->balance = $currentBalance;
-       
         $currentBalance -= $transaction->amount;
     }
 

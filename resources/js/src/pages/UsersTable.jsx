@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo,useRef } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import {
@@ -152,7 +152,11 @@ function UserTable({ userType }) {
 
   const fetchTransactions = (userId, period) => {
     const endpoint = `${window.App.url}/transactions/user/${userId}/period?period=${period}`;
-    return axios.get(endpoint, { withCredentials: true });
+    
+    return axios.get(endpoint, { withCredentials: true,params: {
+      customStartDate: customStartDate,
+      customEndDate: customEndDate,
+    }, });
   };
 
   const handleUserClick = (userId) => {
@@ -204,7 +208,7 @@ function UserTable({ userType }) {
     setShowModal(false);
     setShowCreateUserModal(true);
   };
-
+  const tableRef = React.createRef();
   const sortedAndFilteredCustomers = React.useMemo(() => {
     return [...filteredCustomers]
       .map((customer) => {
@@ -245,14 +249,31 @@ function UserTable({ userType }) {
     setSelectedCustomerId(customer);
     setShowEditModal(true);
   };
-  const handleShareClick = () => {
-    // Din logik for deling kommer her
-    console.log("Del knappen blev klikket");
-    // Du kan inkludere kode her for at dele din side eller data, f.eks. via sociale medier
+  const handleShareClick = async () => {
+    try {
+      
+      
+      if (!tableRef.current) {
+        console.error('Cannot find transactions table element');
+        return;
+      }
+      const dataUrl = await htmlToImage.toPng(tableRef.current);
+      const blob = await (await fetch(dataUrl)).blob();
+      const url = URL.createObjectURL(blob);
+  
+      // Open WhatsApp Web with the image URL
+      const encodedText = encodeURIComponent(`Check out this transaction report:\n${url}`);
+      const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+  
+      window.open(whatsappUrl, '_blank');
+    } catch (error) {
+      console.error('Failed to share transaction table:', error);
+    }
   };
   const handleViewComments = (user) => {
     setSelectedForComments(user); // Åbn modalen med den valgte brugers kommentarer
   };
+  
   return (
     <>
       <Card
@@ -700,13 +721,17 @@ function UserTable({ userType }) {
             selectedUser={selectedUser}
             period={selectedPeriod}
             setPeriod={handlePeriodChange}
+           
             customEndDate={customEndDate}
             setCustomEndDate={setCustomEndDate}
+            customStartDate={customStartDate}
+            setCustomStartDate={setCustomStartDate}
             responsive="sm"
             onTransactionAdded={() => {
               handleTransactionAdded();
               console.log(selectedUser);
             }}
+            ref={tableRef}
           />
         </Modal.Body>
       

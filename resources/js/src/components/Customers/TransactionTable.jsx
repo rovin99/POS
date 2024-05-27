@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, {  useState,forwardRef} from "react";
 import { Row, Col, Table, Button, Modal, Form } from "react-bootstrap";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 
-const TransactionsTable = ({ transactions, selectedUser, setShowModal }) => {
-  const tableRef = useRef();
+const TransactionsTable = forwardRef(({ transactions, selectedUser, setShowModal }, ref) => {
+
   const [showFullScreenImageModal, setShowFullScreenImageModal] =
     useState(false);
   const [fullScreenImage, setFullScreenImage] = useState(null);
@@ -161,7 +161,7 @@ const TransactionsTable = ({ transactions, selectedUser, setShowModal }) => {
           Net Balance: {-selectedUser.balance}
         </div> */}
 
-        <Table striped bordered hover ref={tableRef} responsive="sm">
+        <Table striped bordered hover  responsive="sm" id="trans-table" ref={ref} >
           <thead>
             <tr>
               <th>#</th>
@@ -383,6 +383,6 @@ const TransactionsTable = ({ transactions, selectedUser, setShowModal }) => {
       </Modal>
     </>
   );
-};
+});
 
 export default TransactionsTable;

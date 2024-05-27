@@ -25,6 +25,7 @@ function DateFilterDropdown({ period, setPeriod, customStartDate, setCustomStart
                   onChange={(e) => setCustomStartDate(e.target.value)}
                   className="form-control mb-2"
                 />
+                
                 <input
                   type="date"
                   value={customEndDate}

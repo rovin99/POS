@@ -103,4 +103,25 @@ class BillController extends Controller
     }
     return response()->json(['data' => $months]);
 }
+public function update(Request $request, $id)
+{
+    $bill = Bill::findOrFail($id);
+
+    $request->validate([
+        'customer_name' => 'required|string',
+        'customer_number' => 'required|integer',
+        'total_amount' => 'required|numeric',
+        'sub_total' => 'required|numeric',
+        'tax' => 'required|numeric',
+        'payment_mode' => 'required|string',
+        'cart_items' => 'required|array',
+    ]);
+
+    $bill->update($request->all());
+
+    return response()->json([
+        'message' => 'Bill updated successfully',
+        'bill' => $bill,
+    ]);
+}
 }
