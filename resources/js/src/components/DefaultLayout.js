@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Nav, Container, Offcanvas } from "react-bootstrap";
+import { Link, useNavigate,useLocation } from "react-router-dom";
+import { Navbar, Nav, Container, Offcanvas,Button, Stack } from "react-bootstrap";
 import {
   House,
   BarChart,
@@ -14,14 +14,20 @@ import {
 } from "react-bootstrap-icons";
 import "../styles/DefaultLayout.css";
 import Spinner from "./Spinner";
-
+import LanguageSwitcher from "../layouts/LanguageSwitcher";
+import ThemeToggle from "../layouts/ThemeSwitcher";
+import { useAuth } from "../locales/AuthContext";
+import { useTranslation } from 'react-i18next';
 const DefaultLayout = ({ children }) => {
   const navigate = useNavigate();
   const { cartItems, loading } = useSelector((state) => state.rootReducer);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const { t } = useTranslation(); 
+  const location = useLocation();
+  const { isLoggedIn, username } = useAuth();
+  const initials = username.split(" ").map(name => name[0]).join("");
   // to get localstorage data
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -30,7 +36,7 @@ const DefaultLayout = ({ children }) => {
   return (
     <div>
       {loading && <Spinner />}
-      <Navbar  expand={false}>
+      <Navbar  expand={false} className="bg-body-tertiary">
         <Container fluid>
           <Navbar.Brand href="#">POS</Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
@@ -46,6 +52,11 @@ const DefaultLayout = ({ children }) => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="flex-column">
+              <div className='d-flex justify-content-center' direction="horizontal" gap={3}>
+              <Button variant="outline-secondary">{initials}</Button>
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
                 <Nav.Link as={Link} to="/" onClick={handleClose}>
                   <House className="mr-2" /> Home
                 </Nav.Link>
@@ -83,6 +94,17 @@ const DefaultLayout = ({ children }) => {
             <Cart />
           </div>
         </Container>
+        {/* <Container fluid className='d-flex justify-content-center'>
+          
+          <Navbar.Toggle aria-controls="navbarScroll" className="position-absolute end-0" />
+          <Navbar.Collapse id="navbarScroll">
+            <div className='d-flex justify-content-center' direction="horizontal" gap={3}>
+              <Button variant="outline-secondary">{initials}</Button>
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
+          </Navbar.Collapse>
+        </Container> */}
       </Navbar>
       <Container fluid>{children}</Container>
     </div>

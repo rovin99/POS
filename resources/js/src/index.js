@@ -6,10 +6,15 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 
+import { ThemeProvider, useTheme } from "./layouts/ThemeProvider"; 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+
   <Provider store={store}>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+    
   </Provider>
 );
 

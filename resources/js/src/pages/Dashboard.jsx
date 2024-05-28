@@ -11,14 +11,15 @@ import { ThemeProvider, useTheme } from "../layouts/ThemeProvider"; // Adjust th
 import UserTable from "./UsersTable";
 import MobileHeader from "../layouts/header";
 import { UserProvider } from '../fetch/userContext'; // Importér UserProvider
-
+import DefaultLayout from "./../components/DefaultLayout";
 function Dashboard() {
 
 
   return (
+    <DefaultLayout>
     <Container fluid>
       <Row >
-        <MobileHeader />
+        
         <Col id="main-content m-0 p-0" style={{ margin: 0, padding: 0 }}>
           <ToastProvider>
             <Routes>
@@ -44,13 +45,14 @@ function Dashboard() {
         </Col>
       </Row>
     </Container>
+    </DefaultLayout>
   );
 }
 
 export default () => (
-  <ThemeProvider>
+  
    <UserProvider> 
     <Dashboard />
     </UserProvider>
-  </ThemeProvider>
+  
 );
