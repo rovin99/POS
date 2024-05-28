@@ -11,7 +11,7 @@ import {
   FormControl,
   InputGroup,
 } from "react-bootstrap";
-
+import { useClipboard } from 'use-clipboard-copy';
 import { formatToUrduNumeric, formatDatePK } from "../../locales/format";
 import { useTranslation } from "react-i18next";
 import DateFilterDropdown from "../hooks/DateFilterDropdown";
@@ -29,11 +29,11 @@ function TransactionsTable(props) {
     setCustomStartDate,
     responsive,
     onTransactionAdded,
-    ref,
+    tableRef
   } = props;
 
-  
-  const tableRef = useRef();
+  const clipboard = useClipboard();
+
   const [showFullScreenImageModal, setShowFullScreenImageModal] =
     useState(false);
   const [fullScreenImage, setFullScreenImage] = useState(null);
@@ -60,7 +60,7 @@ function TransactionsTable(props) {
 
     const isSearchTermMatched = transactionData.includes(searchTerm.toLowerCase());
 
-   
+   console.log(customStartDate,customEndDate);
   // New filter condition for start and end dates
   const transactionDate = new Date(transaction.transactionDate);
   const isDateWithinRange =
@@ -130,6 +130,12 @@ function TransactionsTable(props) {
     setTransactionId(transactionId);
     setShowImageUploadModal(true);
   };
+  const handleShareImage = () => {
+    
+    clipboard.copy(`${window.App.url}/${fullScreenImage}`);
+    alert('Image URL copied to clipboard. Please paste it into your WhatsApp chat.');
+  };
+  
 
   return (
     <>
@@ -291,25 +297,25 @@ function TransactionsTable(props) {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowFullScreenImageModal(false)}>
-            Close
-          </Button>{" "}
-          {/* Antag at du har en luk-knap */}
-          {fullScreenImage && (
-            <a
-            href={`${window.App.url}/images/${encodeURIComponent(
-                fullScreenImage.split("/").pop()
-            )}`}
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            <Button variant="primary">download</Button>
-        </a>
-          )}
-        </Modal.Footer>
+  <Button variant="secondary" onClick={closeFullScreenImage}>
+    Close
+  </Button>
+  {fullScreenImage && (
+    <>
+      <a
+        href={`${window.App.url}/images/${encodeURIComponent(
+          fullScreenImage.split("/").pop()
+        )}`}
+        download
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button variant="primary">Download</Button>
+      </a>
+      <Button variant="success" onClick={handleShareImage}>Share on WhatsApp</Button>
+    </>
+  )}
+</Modal.Footer>
       </Modal>
     </>
   );

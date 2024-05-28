@@ -25,6 +25,8 @@ import CreateUserModal from "../utils/CreateUserModal";
 import TransactionsTable from "../components/transTable/UserTrans";
 import EditUserModal from "../utils/EditUserModal";
 
+import { toPng } from 'html-to-image';
+
 import TransactionsTap from "../components/trans/TransTap";
 import { useTranslation } from "react-i18next";
 
@@ -208,7 +210,7 @@ function UserTable({ userType }) {
     setShowModal(false);
     setShowCreateUserModal(true);
   };
-  const tableRef = React.createRef();
+  const tableRef = useRef(null);
   const sortedAndFilteredCustomers = React.useMemo(() => {
     return [...filteredCustomers]
       .map((customer) => {
@@ -250,25 +252,22 @@ function UserTable({ userType }) {
     setShowEditModal(true);
   };
   const handleShareClick = async () => {
-    try {
+    
+      
+      toPng(tableRef.current, { cacheBust: false })
+          .then((dataUrl) => {
+            const link = document.createElement("a");
+            link.download = "Table.png";
+            link.href = dataUrl;
+            link.click();
+            console.log(link.href);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       
       
-      if (!tableRef.current) {
-        console.error('Cannot find transactions table element');
-        return;
-      }
-      const dataUrl = await htmlToImage.toPng(tableRef.current);
-      const blob = await (await fetch(dataUrl)).blob();
-      const url = URL.createObjectURL(blob);
-  
-      // Open WhatsApp Web with the image URL
-      const encodedText = encodeURIComponent(`Check out this transaction report:\n${url}`);
-      const whatsappUrl = `https://wa.me/?text=${encodedText}`;
-  
-      window.open(whatsappUrl, '_blank');
-    } catch (error) {
-      console.error('Failed to share transaction table:', error);
-    }
+    
   };
   const handleViewComments = (user) => {
     setSelectedForComments(user); // Åbn modalen med den valgte brugers kommentarer
@@ -731,7 +730,8 @@ function UserTable({ userType }) {
               handleTransactionAdded();
               console.log(selectedUser);
             }}
-            ref={tableRef}
+            tableRef={tableRef}
+            
           />
         </Modal.Body>
       

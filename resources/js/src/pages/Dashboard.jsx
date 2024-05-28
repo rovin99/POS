@@ -17,6 +17,7 @@ function Dashboard() {
 
   return (
     <DefaultLayout>
+      <MobileHeader></MobileHeader>
     <Container fluid>
       <Row >
         

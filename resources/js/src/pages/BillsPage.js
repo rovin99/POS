@@ -22,13 +22,21 @@ const BillsPage = () => {
     setSelectedBillForEditing(bill);
     setShowInvoiceEditor(true);
   };
-  const getAllBills = async () => {
+  const getAllBills = async (updatedBill = null) => {
     try {
       dispatch({
         type: "SHOW_LOADING",
       });
       const { data } = await axios.get(`${window.App.url}/api/bills`);
-      setBillsData(data);
+      if (updatedBill) {
+        // If an updated bill is provided, replace the corresponding bill in the data array
+        const updatedData = data.map((bill) =>
+          bill.id === updatedBill.id ? updatedBill : bill
+        );
+        setBillsData(updatedData);
+      } else {
+        setBillsData(data);
+      }
       dispatch({ type: "HIDE_LOADING" });
       console.log(data);
     } catch (error) {
@@ -36,7 +44,6 @@ const BillsPage = () => {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getAllBills();
     // eslint-disable-next-line

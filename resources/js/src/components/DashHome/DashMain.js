@@ -188,9 +188,7 @@ const membersData = [
             </Nav>
           </div>
         </Card.Header>
-        <Card.body>
-
-        </Card.body>
+       
         </Card>
 
       <div className={`card col-xl-4 sm-12`}>
