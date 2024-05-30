@@ -47,10 +47,11 @@ const Login = () => {
   }, [navigate]);
 
   return (
+    <div className="login-container">
     <div className="register">
       <div className="register-form">
         <h1>POS APP</h1>
-        <h3>Login Page</h3>
+        
         <Form onSubmit={handleSubmit} className="mt-3">
           <Form.Group controlId="formUserId">
             <Form.Label>User ID</Form.Label>
@@ -60,7 +61,7 @@ const Login = () => {
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" name="password" required />
           </Form.Group>
-          <div className="d-flex justify-content-between mt-3">
+          <div >
             <p>
               Not a user? Please{" "}
               <Link to="/register">Register Here!</Link>
@@ -71,6 +72,7 @@ const Login = () => {
           </div>
         </Form>
       </div>
+    </div>
     </div>
   );
 };

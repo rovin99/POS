@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import axios from "axios";
 import { Modal, Button, Table } from "react-bootstrap"; 
-import styles from "../styles/InvoiceStyles.module.css";
+import  "../styles/InvoiceStyles.css";
 
 const BillsPage = () => {
   const navigate = useNavigate();
@@ -128,19 +128,19 @@ const BillsPage = () => {
             <Modal.Title>Invoice Details</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <div id={styles["invoice-POS"]} ref={componentRef}>
-            <center id={styles.top}>
-              <div className={styles.logo} />
-              <div className={styles.info}>
-                <div className={styles.normal}>Loren Ipsum</div>
-                <p className={styles.p}> Contact : 123456 | Mumbai Maharashtra</p>
+          <div id="invoice-POS" ref={componentRef}>
+            <center id="top">
+              <div className="logo" />
+              <div className="info">
+                <div className="normal">Loren Ipsum</div>
+                <p > Contact : 123456 | Mumbai Maharashtra</p>
               </div>
-              {/*End Info*/}
+              
             </center>
-            {/*End InvoiceTop*/}
+            
             <div id="mid">
               <div className="mt-2">
-                <p className={styles.p}>
+                <p >
                   Customer Name : <b>{selectedBill.customer_name}</b>
                   <br />
                   Phone No : <b>{selectedBill.customer_number}</b>
@@ -158,19 +158,19 @@ const BillsPage = () => {
                   <tbody>
                     <tr className="tabletitle">
                       <td className="item">
-                        <div className={styles.normal}>Item</div>
+                        <div className="normal">Item</div>
                         
                       </td>
                       <td className="Hours">
-                        <div className={styles.normal}>Oty</div>
+                        <div className="normal">Oty</div>
                         
                       </td>
                       <td className="Rate">
-                      <div className={styles.normal}>Price</div>
+                      <div className="normal">Price</div>
                         
                       </td>
                       <td className="Rate">
-                      <div className={styles.normal}>Total</div>
+                      <div className="normal">Total</div>
                         
                       </td>
                     </tr>
@@ -199,10 +199,10 @@ const BillsPage = () => {
                       <td />
                       <td />
                       <td className="Rate">
-                      <div className={styles.normal}>tax</div>
+                      <div className="normal">tax</div>
                       </td>
                       <td className="payment">
-                      <div className={styles.normal}>${selectedBill.tax}</div>
+                      <div className="normal">${selectedBill.tax}</div>
                         
                       </td>
                     </tr>
@@ -210,11 +210,11 @@ const BillsPage = () => {
                       <td />
                       <td />
                       <td className="Rate">
-                      <div className={styles.normal}>Grand Total</div>
+                      <div className="normal">Grand Total</div>
                         
                       </td>
                       <td className="payment">
-                         <div className={styles.normal}> <b>${selectedBill.total_amount}</b></div>
+                         <div className="normal"> <b>${selectedBill.total_amount}</b></div>
                         
                       </td>
                     </tr>

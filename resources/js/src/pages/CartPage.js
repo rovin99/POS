@@ -170,9 +170,9 @@ useEffect(() => {
       </Table>
       <div className="d-flex flex-column align-items-end mt-3">
         <hr />
-        <h4 style={{ color: "#222" }}>
-          SUBT TOTAL : $ <b> {subTotal}</b> /-{" "}
-        </h4>
+        <h5 >
+          SUB TOTAL : $ <b> {subTotal}</b> /-{" "}
+        </h5>
         <Button variant="primary" onClick={() => setShowBillPopup(true)}>
           Create Invoice
         </Button>
@@ -180,12 +180,12 @@ useEffect(() => {
 
       <Modal show={showBillPopup} onHide={() => setShowBillPopup(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title style={{ color: "#222" }}>Create Invoice</Modal.Title>
+          <Modal.Title >Create Invoice</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formCustomerName">
-              <Form.Label style={{ color: "#222" }}>Customer Name</Form.Label>
+              <Form.Label>Customer Name</Form.Label>
               <Form.Control
   type="text"
   name="customerName"
@@ -195,7 +195,7 @@ useEffect(() => {
 />
             </Form.Group>
             <Form.Group controlId="formCustomerNumber">
-              <Form.Label style={{ color: "#222" }}>Contact Number</Form.Label>
+              <Form.Label >Contact Number</Form.Label>
               <Form.Control
   type="text"
   name="customerNumber"
@@ -205,18 +205,18 @@ useEffect(() => {
 />
             </Form.Group>
             <Form.Group controlId="formPaymentMode">
-              <Form.Label style={{ color: "#222" }}>Payment Method</Form.Label>
+              <Form.Label >Payment Method</Form.Label>
               <Form.Select name="paymentMode" required>
                 <option value="cash">Cash</option>
                 <option value="card">Card</option>
               </Form.Select>
             </Form.Group>
             <div className="bill-it">
-              <h6 style={{ color: "grey" }}>Sub Total: ${subTotal}</h6>
-              <h5 style={{ color: "#222" }}>
+              <h6 >Sub Total: ${subTotal}</h6>
+              <h5 >
                 TAX: ${(subTotal / 100 * 10).toFixed(2)}
               </h5>
-              <h4 style={{ color: "#222" }}>
+              <h4 >
                 GRAND TOTAL: $
                 {Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))}
               </h4>
