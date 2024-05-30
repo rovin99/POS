@@ -49,9 +49,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/Admin', function () {
-//     return view('kk');
-// });
 Route::post('api/register', [AuthController::class, 'register']);
 Route::post('api/login', [AuthController::class, 'login']);
 Route::get('/api/users/unverified', [AuthController::class, 'getUnverifiedUsers']);
