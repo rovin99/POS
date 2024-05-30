@@ -16,12 +16,17 @@ const [oldBillId, setOldBillId] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.rootReducer);
-  useEffect(() => {
-    if (location.state?.isEditMode) {
-      setIsEditMode(true);
-      setOldBillId(location.state.oldBillId);
-    }
-  }, [location.state]);
+  const [customerName, setCustomerName] = useState('');
+const [customerNumber, setCustomerNumber] = useState('');
+
+useEffect(() => {
+  if (location.state?.isEditMode) {
+    setIsEditMode(true);
+    setOldBillId(location.state.oldBillId);
+    setCustomerName(location.state.customerName);
+    setCustomerNumber(location.state.customerNumber);
+  }
+}, [location.state]);
   const handleIncrement = (record) => {
     dispatch({
       type: "UPDATE_CART",
@@ -99,6 +104,7 @@ const [oldBillId, setOldBillId] = useState(null);
   
     // Create the newObject based on the form values and cart items
     try{
+      dispatch({ type: "CLEAR_CART" });
       const newObject = {
         customer_name: formValues.customerName,
         customer_number: formValues.customerNumber,
@@ -128,7 +134,7 @@ const [oldBillId, setOldBillId] = useState(null);
         // Normal bill creation flow
         await axios.post(`${window.App.url}/api/bills`, newObject);
         alert("Bill generated");
-        dispatch({ type: "CLEAR_CART" });
+        
         navigate("/bills");
       }
     } catch (error) {
@@ -180,11 +186,23 @@ const [oldBillId, setOldBillId] = useState(null);
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formCustomerName">
               <Form.Label style={{ color: "#222" }}>Customer Name</Form.Label>
-              <Form.Control type="text" name="customerName"  required />
+              <Form.Control
+  type="text"
+  name="customerName"
+  value={customerName}
+  onChange={(e) => setCustomerName(e.target.value)}
+  required
+/>
             </Form.Group>
             <Form.Group controlId="formCustomerNumber">
               <Form.Label style={{ color: "#222" }}>Contact Number</Form.Label>
-              <Form.Control type="text" name="customerNumber"  required />
+              <Form.Control
+  type="text"
+  name="customerNumber"
+  value={customerNumber}
+  onChange={(e) => setCustomerNumber(e.target.value)}
+  required
+/>
             </Form.Group>
             <Form.Group controlId="formPaymentMode">
               <Form.Label style={{ color: "#222" }}>Payment Method</Form.Label>

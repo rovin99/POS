@@ -73,18 +73,15 @@ const BillsPage = () => {
         payload: {...item, quantity: item.quantity },
       });
     });
-    // navigate(`/cart/edit/${row.id}`, {
-    //   state: { bill: row, isEditMode: true, oldBillId: row.id },
-    // });
-    localStorage.setItem(
-      "customerInfo",
-      JSON.stringify({
-        customerName: selectedBill.customer_name,
-        customerNumber: selectedBill.customer_number,
-      })
-    );
-    navigate('/cart',{
-      state: { bill: row, isEditMode: true, oldBillId: row.id },
+    
+    navigate('/cart', {
+      state: {
+        bill: row,
+        isEditMode: true,
+        oldBillId: row.id,
+        customerName: row.customer_name,
+        customerNumber: row.customer_number
+      },
     });
   }}
 >
