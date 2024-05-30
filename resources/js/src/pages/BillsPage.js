@@ -1,42 +1,28 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import { useDispatch } from "react-redux";
-import { Eye,Gear } from "react-bootstrap-icons"; 
-
+import { Eye } from "react-bootstrap-icons"; 
+import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import axios from "axios";
 import { Modal, Button, Table } from "react-bootstrap"; 
 import styles from "../styles/InvoiceStyles.module.css";
-import InvoiceEditor from '../components/InvoiceEditor';
+
 const BillsPage = () => {
+  const navigate = useNavigate();
   const componentRef = useRef();
   const dispatch = useDispatch();
   const [billsData, setBillsData] = useState([]);
   const [popupModal, setPopupModal] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
-  const [showInvoiceEditor, setShowInvoiceEditor] = useState(false);
-  const [selectedBillForEditing, setSelectedBillForEditing] = useState(null);
 
-  const handleEditInvoice = (bill) => {
-    setSelectedBillForEditing(bill);
-    setShowInvoiceEditor(true);
-  };
-  const getAllBills = async (updatedBill = null) => {
+  const getAllBills = async () => {
     try {
       dispatch({
         type: "SHOW_LOADING",
       });
       const { data } = await axios.get(`${window.App.url}/api/bills`);
-      if (updatedBill) {
-        // If an updated bill is provided, replace the corresponding bill in the data array
-        const updatedData = data.map((bill) =>
-          bill.id === updatedBill.id ? updatedBill : bill
-        );
-        setBillsData(updatedData);
-      } else {
-        setBillsData(data);
-      }
+      setBillsData(data);
       dispatch({ type: "HIDE_LOADING" });
       console.log(data);
     } catch (error) {
@@ -44,9 +30,10 @@ const BillsPage = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getAllBills();
-    // eslint-disable-next-line
+    
   }, []);
 
   const handlePrint = useReactToPrint({
@@ -72,11 +59,39 @@ const BillsPage = () => {
             setPopupModal(true);
           }}
         />
-        <Gear
-          size={34}
-          onClick={() => handleEditInvoice(row)}
-        />
+        <button
+  className="btn btn-primary ml-2"
+  onClick={() => {
+    dispatch({ type: "CLEAR_CART" });
+    row.cart_items.forEach((item) => {
+      dispatch({
+        type: "ADD_TO_CART",
+        payload: item,
+      });
+      dispatch({
+        type: "UPDATE_CART",
+        payload: {...item, quantity: item.quantity },
+      });
+    });
+    // navigate(`/cart/edit/${row.id}`, {
+    //   state: { bill: row, isEditMode: true, oldBillId: row.id },
+    // });
+    localStorage.setItem(
+      "customerInfo",
+      JSON.stringify({
+        customerName: selectedBill.customer_name,
+        customerNumber: selectedBill.customer_number,
+      })
+    );
+    navigate('/cart',{
+      state: { bill: row, isEditMode: true, oldBillId: row.id },
+    });
+  }}
+>
+  Edit
+</button>
         </>
+        
       ),
     },
   ];
@@ -86,13 +101,7 @@ const BillsPage = () => {
       <div className="d-flex justify-content-between mb-3">
         <h1>Invoice List</h1>
       </div>
-      {showInvoiceEditor && (
-        <InvoiceEditor
-          bill={selectedBillForEditing}
-          onClose={() => setShowInvoiceEditor(false)}
-          getAllBills={getAllBills}
-        />
-      )}
+
       <Table striped bordered hover>
         <thead>
           <tr>

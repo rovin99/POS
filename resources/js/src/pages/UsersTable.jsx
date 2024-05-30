@@ -260,7 +260,7 @@ function UserTable({ userType }) {
             link.download = "Table.png";
             link.href = dataUrl;
             link.click();
-            console.log(link.href);
+            console.log(link);
           })
           .catch((err) => {
             console.log(err);

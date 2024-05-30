@@ -5,14 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Button, Modal, Form } from "react-bootstrap";
 import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa";
-
+import { useLocation } from "react-router-dom";
 const CartPage = () => {
+  const location = useLocation();
+  const billDetails = location.state?.bill;
   const [subTotal, setSubTotal] = useState(0);
   const [showBillPopup, setShowBillPopup] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+const [oldBillId, setOldBillId] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.rootReducer);
-
+  useEffect(() => {
+    if (location.state?.isEditMode) {
+      setIsEditMode(true);
+      setOldBillId(location.state.oldBillId);
+    }
+  }, [location.state]);
   const handleIncrement = (record) => {
     dispatch({
       type: "UPDATE_CART",
@@ -80,36 +89,54 @@ const CartPage = () => {
     cartItems.forEach((item) => (temp += item.price * item.quantity));
     setSubTotal(temp);
   }, [cartItems]);
+  
 
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const value = Object.fromEntries(formData.entries());
-
-    try {
+    const formValues = Object.fromEntries(formData.entries());
+  
+    // Create the newObject based on the form values and cart items
+    try{
       const newObject = {
-        customer_name: value.customerName,
-        customer_number: parseInt(value.customerNumber, 10),
-        total_amount: Number(
-          Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))
-        ),
+        customer_name: formValues.customerName,
+        customer_number: formValues.customerNumber,
+        payment_mode: formValues.paymentMode,
         sub_total: subTotal,
-        tax: Number(((subTotal / 100) * 10).toFixed(2)),
-        payment_mode: value.paymentMode,
+        tax: (subTotal / 100 * 10).toFixed(2),
+        total_amount: Number(subTotal) + Number((subTotal / 100 * 10).toFixed(2)),
         cart_items: cartItems,
-        userId: JSON.parse(localStorage.getItem("auth")).id,
       };
-      await axios.post(`${window.App.url}/api/bills`, newObject);
-      alert("Bill Generated");
-
-      dispatch({ type: "CLEAR_CART" });
-      navigate("/bills");
+    
+      if (isEditMode) {
+        const confirm = window.confirm(
+          `You are editing an existing bill. Do you want to create a new bill or replace the old bill?`
+        );
+        if (confirm) {
+          // Create a new bill
+          await axios.post(`${window.App.url}/api/bills`, newObject);
+          alert("New bill generated");
+          navigate("/bills");
+        } else {
+          // Replace the old bill
+          await axios.put(`${window.App.url}/api/bills/${oldBillId}`, newObject);
+          alert("Bill updated");
+          navigate("/bills");
+        }
+      } else {
+        // Normal bill creation flow
+        await axios.post(`${window.App.url}/api/bills`, newObject);
+        alert("Bill generated");
+        dispatch({ type: "CLEAR_CART" });
+        navigate("/bills");
+      }
     } catch (error) {
       alert("Something went wrong");
       console.log(error);
     }
+    
   };
-
   return (
     <DefaultLayout>
       <h1>Cart Page</h1>
@@ -153,11 +180,11 @@ const CartPage = () => {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formCustomerName">
               <Form.Label style={{ color: "#222" }}>Customer Name</Form.Label>
-              <Form.Control type="text" name="customerName" required />
+              <Form.Control type="text" name="customerName"  required />
             </Form.Group>
             <Form.Group controlId="formCustomerNumber">
               <Form.Label style={{ color: "#222" }}>Contact Number</Form.Label>
-              <Form.Control type="text" name="customerNumber" required />
+              <Form.Control type="text" name="customerNumber"  required />
             </Form.Group>
             <Form.Group controlId="formPaymentMode">
               <Form.Label style={{ color: "#222" }}>Payment Method</Form.Label>
