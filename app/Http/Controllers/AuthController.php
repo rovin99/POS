@@ -24,6 +24,7 @@ class AuthController extends Controller
             'user_id' => $request->user_id,
             'password' => Hash::make($request->password),
             'verified' => false,
+            'super_admin'=> false
         ]);
 
         return response()->json(['message' => 'User registered successfully but awaits admin approval']);

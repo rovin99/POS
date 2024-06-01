@@ -68,6 +68,22 @@ function TransactionsTable({ activeTab, userType }) {
   const closeImageUploadModal = () => {
     setShowImageUploadModal(false);
   };
+  const handleDeleteTransaction = async (transactionId) => {
+    try {
+        const response = await axios.delete(`${window.App.url}/transactions/${transactionId}`, {
+            withCredentials: true, 
+        });
+        if (response.status === 200) {
+            alert('Transaction deleted successfully');
+            
+        } else {
+            alert('Failed to delete transaction');
+        }
+    } catch (error) {
+        console.error("Error deleting transaction:", error);
+        alert('An error occurred while trying to delete the transaction.');
+    }
+};
 
   const handleImageUpload = async (file) => {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -189,6 +205,7 @@ function TransactionsTable({ activeTab, userType }) {
                           </Button>
                         )}
                       </td>
+
                       <td style={{ color: determineFontColorTransac("debit") }}>
                         {!isCredit
                           ? formatToUrduNumeric(transaction.amount)
@@ -208,6 +225,13 @@ function TransactionsTable({ activeTab, userType }) {
                         }}>
                         {formatToUrduNumeric(transaction.balance)}
                       </td>
+                      <td>
+                      <Button
+      variant="danger"
+      onClick={() => handleDeleteTransaction(transaction.transactionId)}
+    >
+      Delete</Button>
+</td>
                     </tr>
                   );
                 })}

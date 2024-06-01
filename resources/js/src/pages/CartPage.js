@@ -18,7 +18,7 @@ const [oldBillId, setOldBillId] = useState(null);
   const { cartItems } = useSelector((state) => state.rootReducer);
   const [customerName, setCustomerName] = useState('');
 const [customerNumber, setCustomerNumber] = useState('');
-
+const [taxPercentages, setTaxPercentages] = useState({});
 useEffect(() => {
   if (location.state?.isEditMode) {
     setIsEditMode(true);
@@ -27,6 +27,14 @@ useEffect(() => {
     setCustomerNumber(location.state.customerNumber);
   }
 }, [location.state]);
+useEffect(() => {
+  const initialTaxPercentages = {};
+  cartItems.forEach(item => {
+    initialTaxPercentages[item.id] = 0; 
+  });
+  setTaxPercentages(initialTaxPercentages);
+}, [cartItems]);
+
   const handleIncrement = (record) => {
     dispatch({
       type: "UPDATE_CART",
@@ -91,10 +99,15 @@ useEffect(() => {
 
   useEffect(() => {
     let temp = 0;
-    cartItems.forEach((item) => (temp += item.price * item.quantity));
+    cartItems.forEach((item) => {
+      const taxPercentage = taxPercentages[item.id];
+      const taxAmount = taxPercentage? (item.price * item.quantity * taxPercentage) / 100 : 0;
+      temp += item.price * item.quantity + taxAmount;
+      console.log(taxAmount );
+    });
     setSubTotal(temp);
-  }, [cartItems]);
-  
+   
+  }, [cartItems, taxPercentages]);
 
   
   const handleSubmit = async (event) => {
@@ -155,18 +168,33 @@ useEffect(() => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map((item, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map((column, colIndex) => (
-                <td key={colIndex}>
-                  {column.render
-                    ? column.render(item[column.dataIndex], item)
-                    : item[column.dataIndex]}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
+  {cartItems.map((item, rowIndex) => (
+    <tr key={rowIndex}>
+      {columns.map((column, colIndex) => (
+        <td key={colIndex}>
+          {column.render
+           ? column.render(item[column.dataIndex], item)
+            : item[column.dataIndex]}
+        </td>
+      ))}
+      
+      <td>
+        <input
+          type="number"
+          placeholder="Enter tax percentage"
+          defaultValue={taxPercentages[item.id] || ''}
+          onChange={(e) => {
+            const percentage = e.target.value;
+            dispatch({
+              type: "SET_TAX_PERCENTAGE",
+              payload: { itemId: item.id, percentage },
+            });
+          }}
+        />
+      </td>
+    </tr>
+  ))}
+</tbody>
       </Table>
       <div className="d-flex flex-column align-items-end mt-3">
         <hr />

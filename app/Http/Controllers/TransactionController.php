@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 class TransactionController extends Controller
 {
     public function getAllTransactions()
@@ -55,7 +56,7 @@ class TransactionController extends Controller
                     't.imageUrl',
                     't.transactionType',
                     't.amount',
-                    DB::raw('(SELECT SUM(amount) FROM luxcammy_com_db.transactions WHERE userId = u.id) AS balance')
+                    DB::raw('(SELECT SUM(amount) FROM kk_test.transactions WHERE userId = u.id) AS balance')
                 )
                 ->orderByDesc('t.logDate')
                 ->orderByDesc('t.transactionId')
@@ -196,5 +197,59 @@ public function addTransaction(Request $request)
             'imageUrl' => $transaction->imageUrl,
         ]);
     }
+//     public function deleteTransaction($transactionId)
+// {
+//     $transaction = Transaction::find($transactionId);
 
+//     if (!$transaction) {
+//         return response()->json(['message' => 'Transaction not found'], 404);
+//     }
+
+//     // Retrieve the currently authenticated user
+//     $currentUser = Auth::user();
+
+//     // Check if the current user is a super admin
+//     if (!$currentUser || !$currentUser->super_admin) {
+//         return response()->json(['message' => 'Unauthorized action'], 403);
+//     }
+
+//     $transaction->delete();
+
+//     return response()->json(['message' => 'Transaction deleted successfully']);
+// }
+// public function deleteTransaction($transactionId)
+// {
+//     $transaction = Transaction::find($transactionId);
+
+//     if (!$transaction) {
+//         return response()->json(['message' => 'Transaction not found'], 404);
+//     }
+
+//     // Check if the current user is a superadmin
+//     if (!auth()->user()->super_admin) {
+//         return response()->json(['message' => 'Unauthorized action'], 403);
+//     }
+
+//     $transaction->delete();
+
+//     return response()->json(['message' => 'Transaction deleted successfully']);
+// }
+public function deleteTransaction($transactionId)
+{
+    // Check if the authenticated user is a superadmin
+    if (auth()->user()->super_admin) {
+        $transaction = Transaction::find($transactionId);
+
+        if ($transaction) {
+            // Delete the transaction
+            $transaction->delete();
+
+            return response()->json(['message' => 'Transaction deleted successfully']);
+        } else {
+            return response()->json(['error' => 'Transaction not found'], 404);
+        }
+    } else {
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
+}
 }

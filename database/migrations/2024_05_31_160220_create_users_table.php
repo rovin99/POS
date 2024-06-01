@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('user_id')->unique();
             $table->string('password');
             $table->boolean('verified')->default(false);
+            $table->boolean('super_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

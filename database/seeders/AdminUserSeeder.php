@@ -13,26 +13,15 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('admin_user')->insert([
+        DB::table('users')->insert([
             [
-                'userID' => 1,
-                'username' => 'AA',
+                'name' => "admin",
+                'user_id' => 'admin1',
                 'password' => Hash::make('password'),
-                'email' => 'aa@aatech.dk',
-                'adminType' => 'Admin',
-                'phoneNumber' => '28910515',
-                'created_at' => '2024-03-10 00:23:11',
-                'updated_at' => '2024-03-10 00:23:11'
-            ],
-            [
-                'userID' => 2,
-                'username' => 'Kaleem',
-                'password' => Hash::make('password'),
-                'email' => 'kk@kk.dk',
-                'adminType' => 'SuperAdmin',
-                'phoneNumber' => '03007050000',
-                'created_at' => '2024-03-10 01:35:11',
-                'updated_at' => '2024-03-10 01:35:11'
+                'verified' => true,
+                'super_admin' => true
+                
+                
             ]
         ]);
     }

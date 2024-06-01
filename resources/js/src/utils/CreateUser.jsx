@@ -3,7 +3,7 @@ import { Form, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'; // Importer useTranslation-krogen
-import APIConfig from '../fetch/config';
+
 function CreateUser({ userType, onClose }) {
   const { t } = useTranslation(); // Brug useTranslation-krogen
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ function CreateUser({ userType, onClose }) {
       console.log('User Created:', response.data);
       // Reset the form or navigate the user to another page
       setTimeout(() => {
-        navigate('/transaction');
+        navigate('/dashboard');
       }, 1000);
     })
     .catch(error => {

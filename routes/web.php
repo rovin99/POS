@@ -28,6 +28,7 @@ Route::get('/comments', [CommentController::class, 'index']);
 Route::post('/login', [AdminController::class, 'login']);
 
 Route::get('/transactions', [TransactionController::class, 'getAllTransactions'])->middleware(AuthMiddleware::class);
+Route::delete('/transactions/{transactionId}', [TransactionController::class, 'deleteTransaction'])->middleware(AuthMiddleware::class);
 Route::get('/transactions/user/{userId}', [TransactionController::class, 'getTransactionsByUser'])->middleware(AuthMiddleware::class);
 Route::get('/transactions/userType/{userType}', [TransactionController::class, 'getTransactionsByUserType'])->middleware(AuthMiddleware::class);
 Route::get('/transactions/latestByUserType', [TransactionController::class, 'getLatestTransactionsByUserType'])->middleware(AuthMiddleware::class);

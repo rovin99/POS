@@ -55,6 +55,18 @@ export const rootReducer = (state = intialState, action) => {
          ...state,
           cartItems: [],
         };
+        case "SET_TAX_PERCENTAGE": {
+          const itemIndex = state.cartItems.findIndex(item => item.id === action.payload.itemId);
+          if (itemIndex >= 0) {
+            return {
+             ...state,
+              cartItems: state.cartItems.map(item => 
+                item.id === action.payload.itemId? {...item, taxPercentage: action.payload.percentage } : item
+              )
+            };
+          }
+          return state;
+        }
     default:
       return state;
   }
