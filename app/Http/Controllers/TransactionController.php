@@ -236,20 +236,18 @@ public function addTransaction(Request $request)
 // }
 public function deleteTransaction($transactionId)
 {
-    // Check if the authenticated user is a superadmin
-    if (auth()->user()->super_admin) {
+    
+    
         $transaction = Transaction::find($transactionId);
 
         if ($transaction) {
-            // Delete the transaction
+            
             $transaction->delete();
 
             return response()->json(['message' => 'Transaction deleted successfully']);
         } else {
             return response()->json(['error' => 'Transaction not found'], 404);
         }
-    } else {
-        return response()->json(['error' => 'Unauthorized'], 403);
-    }
+    
 }
 }

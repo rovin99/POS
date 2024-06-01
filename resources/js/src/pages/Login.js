@@ -10,36 +10,37 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent form submission reload
+    event.preventDefault();
     const formData = new FormData(event.target);
-
+  
     try {
       dispatch({
         type: "SHOW_LOADING",
       });
-
       const value = {
         user_id: formData.get('user_id'),
         password: formData.get('password')
       };
-
       const res = await axios.post(`${window.App.url}/api/login`, value);
       dispatch({ type: "HIDE_LOADING" });
-      alert("User logged in successfully"); // Using native alert instead of antd message
-
+      alert("User logged in successfully");
+  
       const inTenYears = new Date(new Date().getTime() + 10 * 365 * 24 * 60 * 60 * 1000);
       Cookies.set('isLoggedIn', true, { expires: inTenYears });
       Cookies.set('username', res.data.username, { expires: inTenYears });
-
+  
+      
+      localStorage.setItem("super_admin", res.data.super_admin);
+      console.log(res.data.super_admin);
       localStorage.setItem("auth", JSON.stringify(res.data));
       navigate("/");
     } catch (error) {
       dispatch({ type: "HIDE_LOADING" });
-      alert("Something went wrong"); // Using native alert instead of antd message
+      alert("Something went wrong");
       console.log(error);
     }
   };
-
+  
   useEffect(() => {
     if (localStorage.getItem("auth")) {
       navigate("/");

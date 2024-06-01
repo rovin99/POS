@@ -46,7 +46,10 @@ class AuthController extends Controller
             return response()->json(['message' => 'User not verified'], 401);
         }
 
-        return response()->json(['message' => 'User logged in successfully']);
+        return response()->json([
+            'message' => 'User logged in successfully',
+            'super_admin' => $user->super_admin, 
+        ]);
     }
 
     public function approveUser(Request $request)

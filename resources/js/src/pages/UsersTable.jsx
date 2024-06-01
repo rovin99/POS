@@ -246,7 +246,8 @@ function UserTable({ userType }) {
         return 0;
       });
   }, [filteredCustomers, sortField, sortOrder, comments]); // Tilføj 'comments' som en afhængighed
-
+  const isSuperAdmin = localStorage.getItem('super_admin') === 'true';
+  console.log(isSuperAdmin);
   const handleEditUserClick = (customer) => {
     setSelectedCustomerId(customer);
     setShowEditModal(true);
@@ -275,6 +276,7 @@ function UserTable({ userType }) {
   
   return (
     <>
+     
       <Card
         style={{
           borderLeft: "none",
