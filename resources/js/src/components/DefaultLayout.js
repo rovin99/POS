@@ -38,8 +38,9 @@ const DefaultLayout = ({ children }) => {
       {loading && <Spinner />}
       <Navbar  expand={false} className="bg-body-tertiary">
         <Container fluid>
-          <Navbar.Brand href="#">POS</Navbar.Brand>
+          
           <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
+          <Navbar.Brand href="#">POS</Navbar.Brand>
           <Navbar.Offcanvas
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"
@@ -106,7 +107,11 @@ const DefaultLayout = ({ children }) => {
           </Navbar.Collapse>
         </Container> */}
       </Navbar>
+      <br>  
+      
+      </br>
       <Container fluid>{children}</Container>
+
     </div>
   );
 };
