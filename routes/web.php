@@ -38,13 +38,13 @@ Route::get('/transactions/transType', [TransactionController::class, 'getTransac
 Route::post('/add-transaction', [TransactionController::class, 'addTransaction'])->middleware(AuthMiddleware::class);
 
 
-Route::post('/add-image', [ImageController::class, 'addImage'])->middleware(AuthMiddleware::class);
+Route::post('/add-image', [ImageController::class, 'addImage']);
 
 Route::get('/api/items', [ItemController::class , 'index']);
 Route::post('/api/items', [ItemController::class , 'store']);
 Route::put('/api/items', [ItemController::class , 'update']);
 Route::delete('/api/items', [ItemController::class , 'destroy']);
-Route::post('api/upload', [ItemController::class, 'upload']);
+Route::post('/api/upload', [ItemController::class, 'upload']);
 
 Route::get('/', function () {
     return view('welcome');
@@ -59,15 +59,15 @@ Route::post('/api/bills', [BillController::class, 'store']);
 Route::get('/api/bills', [BillController::class, 'index']);
 Route::put('/api/bills/{id}', [BillController::class, 'update']);
 
-    Route::get('/api/bills/today-sales', [BillController::class, 'getTodaysSales']);
-    Route::get('/api/bills/this-week-sales', [BillController::class, 'getThisWeeksSales']);
-    Route::get('/api/bills/this-month-sales', [BillController::class, 'getThisMonthsSales']);
+Route::get('/api/bills/today-sales', [BillController::class, 'getTodaysSales']);
+Route::get('/api/bills/this-week-sales', [BillController::class, 'getThisWeeksSales']);
+Route::get('/api/bills/this-month-sales', [BillController::class, 'getThisMonthsSales']);
 
 
-    Route::get('/api/items/most-sold', [BillController::class, 'getMostSoldItems']);
+Route::get('/api/items/most-sold', [BillController::class, 'getMostSoldItems']);
 
 
 
-    Route::get('/api/bills/monthly-profit', [BillController::class, 'getMonthlyProfit']);
-    Route::get('/api/bills/monthly-sales', [BillController::class, 'getMonthlySales']);
-    Route::get('/api/items/{itemIdOrName}', [ItemController::class, 'showByIdOrName']);
+Route::get('/api/bills/monthly-profit', [BillController::class, 'getMonthlyProfit']);
+Route::get('/api/bills/monthly-sales', [BillController::class, 'getMonthlySales']);
+Route::get('/api/items/{itemIdOrName}', [ItemController::class, 'showByIdOrName']);

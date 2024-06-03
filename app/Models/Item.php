@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'price', 'category', 'image', 'stock'];
+    protected $fillable = ['name', 'price', 'category', 'image', 'stock','tax'];
     public function bills()
     {
         return $this->belongsToMany(Bill::class)->withPivot('quantity', 'price');

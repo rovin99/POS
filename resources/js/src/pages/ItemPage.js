@@ -61,7 +61,9 @@ const ItemPage = () => {
         const res = await axios.post(`${window.App.url}/api/items`, itemData);
         toast.success("Item Added Successfully");
         getAllItems();
+        
         setShowModal(false);
+
         dispatch({ type: "HIDE_LOADING" });
       } catch (error) {
         dispatch({ type: "HIDE_LOADING" });
@@ -79,6 +81,7 @@ const ItemPage = () => {
         });
         toast.success("Item Updated Successfully");
         getAllItems();
+        
         setShowModal(false);
         dispatch({ type: "HIDE_LOADING" });
       } catch (error) {
@@ -88,7 +91,7 @@ const ItemPage = () => {
       }
     }
   };
-
+  
   return (
     <>
       <ToastContainer />
@@ -96,7 +99,10 @@ const ItemPage = () => {
         <Container fluid>
           <Row className="justify-content-between align-items-center mb-3">
             <Col><h1 style={{ color: "#222" }}>Item List</h1></Col>
-            <Col><Button variant="primary" onClick={() => setShowModal(true)}>Add Item</Button></Col>
+            <Col><Button variant="primary" onClick={() => {
+  setEditItem(null); // Reset the editItem state to null
+  setShowModal(true);
+}}>Add Item</Button></Col>
           </Row>
           <Table striped bordered hover>
             <thead>
@@ -136,7 +142,7 @@ const ItemPage = () => {
         </Container>
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>{editItem!== null? "Edit Item" : "Add New Item"}</Modal.Title>
+            <Modal.Title>{editItem !== null? "Edit Item" : "Add New Item"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
@@ -148,7 +154,6 @@ const ItemPage = () => {
                 <Form.Label style={{ color: "#222" }}>Price</Form.Label>
                 <Form.Control type="text" name="price" defaultValue={editItem?.price} />
               </FormGroup>
-              
               <FormGroup controlId="formBasicText">
                 <Form.Label style={{ color: "#222" }}>Image URL</Form.Label>
                 <Form.Control type="text" name="image" defaultValue={editItem?.image} />
@@ -165,7 +170,7 @@ const ItemPage = () => {
                 <Form.Label style={{ color: "#222" }}>Stock</Form.Label>
                 <Form.Control type="number" name="stock" defaultValue={editItem?.stock} min="1" />
               </FormGroup>
-              <FormGroup controlId="formBasicText">
+              <FormGroup controlId="formBasicNumber">
                 <Form.Label style={{ color: "#222" }}>Tax</Form.Label>
                 <Form.Control type="text" name="tax" defaultValue={editItem?.tax} min="0" />
               </FormGroup>

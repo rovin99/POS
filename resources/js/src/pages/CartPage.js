@@ -18,7 +18,8 @@ const [oldBillId, setOldBillId] = useState(null);
   const { cartItems } = useSelector((state) => state.rootReducer);
   const [customerName, setCustomerName] = useState('');
 const [customerNumber, setCustomerNumber] = useState('');
-const [taxPercentages, setTaxPercentages] = useState({});
+const [totalTax, setTotalTax] = useState(0);
+
 useEffect(() => {
   if (location.state?.isEditMode) {
     setIsEditMode(true);
@@ -27,14 +28,6 @@ useEffect(() => {
     setCustomerNumber(location.state.customerNumber);
   }
 }, [location.state]);
-useEffect(() => {
-  const initialTaxPercentages = {};
-  cartItems.forEach(item => {
-    initialTaxPercentages[item.id] = 0; 
-  });
-  setTaxPercentages(initialTaxPercentages);
-}, [cartItems]);
-
   const handleIncrement = (record) => {
     dispatch({
       type: "UPDATE_CART",
@@ -61,6 +54,7 @@ useEffect(() => {
       ),
     },
     { title: "Price", dataIndex: "price" },
+    { title: "Tax", dataIndex: "tax" },
     {
       title: "Quantity",
       dataIndex: "id",
@@ -97,18 +91,23 @@ useEffect(() => {
     },
   ];
 
+  // useEffect(() => {
+  //   let temp = 0;
+  //   cartItems.forEach((item) => (temp += item.price * item.quantity));
+  //   setSubTotal(temp);
+  // }, [cartItems]);
+  
   useEffect(() => {
     let temp = 0;
+    let totalTax = 0;
     cartItems.forEach((item) => {
-      const taxPercentage = taxPercentages[item.id];
-      const taxAmount = taxPercentage? (item.price * item.quantity * taxPercentage) / 100 : 0;
-      temp += item.price * item.quantity + taxAmount;
-      console.log(taxAmount );
+      temp += item.price * item.quantity;
+      totalTax += (item.price * item.tax / 100) * item.quantity; // Calculate total tax
     });
     setSubTotal(temp);
-   
-  }, [cartItems, taxPercentages]);
-
+    setTotalTax(totalTax.toFixed(2)); // Use toFixed to round off to 2 decimal places
+    console.log(totalTax);
+  }, [cartItems]);
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -123,8 +122,8 @@ useEffect(() => {
         customer_number: formValues.customerNumber,
         payment_mode: formValues.paymentMode,
         sub_total: subTotal,
-        tax: (subTotal / 100 * 10).toFixed(2),
-        total_amount: Number(subTotal) + Number((subTotal / 100 * 10).toFixed(2)),
+        tax: totalTax,
+        total_amount: Number(subTotal) + Number(totalTax),
         cart_items: cartItems,
       };
     
@@ -168,39 +167,24 @@ useEffect(() => {
           </tr>
         </thead>
         <tbody>
-  {cartItems.map((item, rowIndex) => (
-    <tr key={rowIndex}>
-      {columns.map((column, colIndex) => (
-        <td key={colIndex}>
-          {column.render
-           ? column.render(item[column.dataIndex], item)
-            : item[column.dataIndex]}
-        </td>
-      ))}
-      
-      <td>
-        <input
-          type="number"
-          placeholder="Enter tax percentage"
-          defaultValue={taxPercentages[item.id] || ''}
-          onChange={(e) => {
-            const percentage = e.target.value;
-            dispatch({
-              type: "SET_TAX_PERCENTAGE",
-              payload: { itemId: item.id, percentage },
-            });
-          }}
-        />
-      </td>
-    </tr>
-  ))}
-</tbody>
+          {cartItems.map((item, rowIndex) => (
+            <tr key={rowIndex}>
+              {columns.map((column, colIndex) => (
+                <td key={colIndex}>
+                  {column.render
+                    ? column.render(item[column.dataIndex], item)
+                    : item[column.dataIndex]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </Table>
       <div className="d-flex flex-column align-items-end mt-3">
         <hr />
-        <h5 >
-          SUB TOTAL : $ <b> {subTotal}</b> /-{" "}
-        </h5>
+        <h4 style={{ color: "#222" }}>
+          SUBT TOTAL : $ <b> {subTotal}</b> /-{" "}
+        </h4>
         <Button variant="primary" onClick={() => setShowBillPopup(true)}>
           Create Invoice
         </Button>
@@ -208,12 +192,12 @@ useEffect(() => {
 
       <Modal show={showBillPopup} onHide={() => setShowBillPopup(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title >Create Invoice</Modal.Title>
+          <Modal.Title style={{ color: "#222" }}>Create Invoice</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formCustomerName">
-              <Form.Label>Customer Name</Form.Label>
+              <Form.Label style={{ color: "#222" }}>Customer Name</Form.Label>
               <Form.Control
   type="text"
   name="customerName"
@@ -223,7 +207,7 @@ useEffect(() => {
 />
             </Form.Group>
             <Form.Group controlId="formCustomerNumber">
-              <Form.Label >Contact Number</Form.Label>
+              <Form.Label style={{ color: "#222" }}>Contact Number</Form.Label>
               <Form.Control
   type="text"
   name="customerNumber"
@@ -233,20 +217,20 @@ useEffect(() => {
 />
             </Form.Group>
             <Form.Group controlId="formPaymentMode">
-              <Form.Label >Payment Method</Form.Label>
+              <Form.Label style={{ color: "#222" }}>Payment Method</Form.Label>
               <Form.Select name="paymentMode" required>
                 <option value="cash">Cash</option>
                 <option value="card">Card</option>
               </Form.Select>
             </Form.Group>
             <div className="bill-it">
-              <h6 >Sub Total: ${subTotal}</h6>
-              <h5 >
-                TAX: ${(subTotal / 100 * 10).toFixed(2)}
+              <h6 style={{ color: "grey" }}>Sub Total: ${subTotal}</h6>
+              <h5 style={{ color: "#222" }}>
+                TAX: $ {totalTax}
               </h5>
-              <h4 >
+              <h4 style={{ color: "#222" }}>
                 GRAND TOTAL: $
-                {Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))}
+                {Number(subTotal) + Number(totalTax)}
               </h4>
             </div>
             <div className="d-flex justify-content-end mt-3">

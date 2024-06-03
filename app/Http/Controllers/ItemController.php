@@ -87,21 +87,24 @@ public function upload(Request $request)
      * @return \Illuminate\Http\Response
      */
     public function showByIdOrName($itemIdOrName)
-    {
-       
-        $item = Item::find($itemIdOrName);
+{
+    // Log the input value
+    \Log::info("Searching for item with ID or Name: {$itemIdOrName}");
 
-       
-        if (!$item) {
-            $item = Item::where('name', $itemIdOrName)->first();
-        }
+    $item = Item::find($itemIdOrName);
 
-       
-        if ($item) {
-            return response()->json($item);
-        }
-
-       
-        return response()->json(['message' => 'Item not found'], 404);
+    if (!$item) {
+        $item = Item::where('name', $itemIdOrName)->first();
     }
+
+    if ($item) {
+        // Log the found item
+        \Log::info("Found item: ", [$item]);
+        return response()->json($item);
+    }
+
+    // Log not found case
+    \Log::warning("Item not found for ID or Name: {$itemIdOrName}");
+    return response()->json(['message' => 'Item not found'], 404);
+}
 }
